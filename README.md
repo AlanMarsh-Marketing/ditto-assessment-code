@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ditto assessments
 
-## Getting Started
+Self-hosted quiz and assessment platform for Ditto's sales and partner
+enablement. Next.js + TypeScript + Tailwind, brand system self-contained in
+`brand/`, Notion as the results backend (added in a later step). Full spec:
+[`../ditto-quiz-tool-prompt-final.md`](../ditto-quiz-tool-prompt-final.md).
 
-First, run the development server:
+**Status: step 1 of 5** — repo scaffold, brand tokens wired into Tailwind,
+one branded static page (`/`) proving the design system renders correctly.
+No quiz content, no Notion integration yet. See `CLAUDE.md`'s "Build order"
+for what's next.
+
+## Local setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) — this currently shows a
+brand sampler page (buttons, cards, stat callouts, icons), not a quiz.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Brand system
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Everything under `brand/` is the Ditto Design System handoff bundle
+(tokens, fonts, icons, logos, component source, full guidelines). **Read
+[`brand/BRAND.md`](brand/BRAND.md) before touching any UI** — every colour,
+font, radius and spacing value must come from `brand/ditto-tokens.css`.
+Ported, ready-to-use React components live in `components/ds/`.
 
-## Learn More
+## Env vars
 
-To learn more about Next.js, take a look at the following resources:
+None yet — `NOTION_TOKEN`, `NOTION_PARENT_PAGE_ID`, `NOTION_RESPONSES_DB_ID`
+and `NOTION_ANSWERS_DB_ID` land with the Notion setup step, along with a
+`.env.example`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Not deployed yet. Target is Vercel's free (Hobby) tier, no custom domain for
+now — deploying to the default `*.vercel.app` URL until the `learn.ditto.id`
+subdomain is ready. Exact deploy steps will be documented here once the app
+does something worth deploying (after step 3/4).

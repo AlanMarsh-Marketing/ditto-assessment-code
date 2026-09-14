@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" viewport="700x360" name="06 Aperture image" subtitle="Cover photo in the aperture shape — fills the right half, flush to top/right/bottom edges" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; padding: 24px 28px; background: var(--surface-page); font-family: var(--font-sans); }
+  .cap { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .cap b { color: var(--text-strong); font-weight: 600; }
+  .slide { position: relative; width: 480px; height: 270px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 6px; overflow: hidden; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { ApertureImage } = window.DittoDesignSystem_b6143a;
+  const base = "../../assets/photos/";
+  function Demo() {
+    // In-context: cover photo fills the right half, flush to top/right/bottom edges.
+    return (
+      <div style={{display:'flex',flexDirection:'column',gap:14}}>
+        <div className="slide">
+          <div style={{position:'absolute',left:24,top:0,bottom:0,width:200,display:'flex',flexDirection:'column',justifyContent:'center'}}>
+            <div style={{fontSize:11,fontWeight:600,color:'var(--ditto-orange)'}}>Presentation cover</div>
+            <div style={{fontSize:20,fontWeight:500,color:'var(--ditto-purple)',lineHeight:1.15,marginTop:6}}>Identity you can trust</div>
+          </div>
+          <ApertureImage photo="man-phone-urban.jpg" basePath={base} width={240} height={270}
+            style={{position:'absolute',top:0,right:0,bottom:0}} />
+        </div>
+        <div className="cap"><b>Cover use only.</b> The aperture fills the <b>right half</b> of the slide and touches the <b>top, right and bottom</b> edges — never floating. One fixed orientation (notch top-left, rounded bottom-left). Per-filename crop is baked in.</div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<Demo/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!-- @dsCard group="Components" viewport="700x430" name="01 Buttons" subtitle="Primary, secondary, outline, ghost — three sizes · icons only when functional" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="../../assets/icons/ditto-icon.js"></script>
+<style>
+  body { margin: 0; padding: 24px 28px; background: var(--surface-page); display: flex; flex-direction: column; gap: 14px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .note { margin-top: 6px; font-size: 11px; color: var(--text-muted); line-height: 1.5; font-family: var(--font-sans); }
+  .lbl { font-size: 10px; font-weight: var(--fw-semibold); letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-sans); margin: 8px 0 -4px; }
+  .rule { font-family: var(--font-sans); font-size: 12px; line-height: 1.55; color: var(--text-body); background: var(--orange-050); border: 1px dashed var(--ditto-orange); border-radius: var(--radius-md); padding: 12px 14px; margin-top: 10px; }
+  .rule strong { color: #000; }
+  .rule code { font-size: 11px; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+  const { Button } = window.DittoDesignSystem_b6143a;
+  function Demo() {
+    return (
+      <div style={{display:'flex',flexDirection:'column',gap:14}}>
+        <div style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
+          <Button variant="primary">Get started</Button>
+          <Button variant="secondary">Book a demo</Button>
+          <Button variant="outline">Read the guide</Button>
+          <Button variant="ghost">Learn more</Button>
+          <Button variant="primary" disabled>Disabled</Button>
+        </div>
+        <div style={{display:'flex',gap:12,alignItems:'center'}}>
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
+        </div>
+        <p className="lbl">Functional icons only — the icon does a job</p>
+        <div style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
+          <Button variant="outline">Export<ditto-icon name="ui-chevron-down" style={{width:16,height:16,marginLeft:8,'--icon-ink':'currentColor'}}></ditto-icon></Button>
+          <Button variant="ghost"><ditto-icon name="ui-back" style={{width:16,height:16,marginRight:8,'--icon-ink':'currentColor'}}></ditto-icon>Back</Button>
+          <Button variant="primary">Continue<ditto-icon name="ui-chevron-down" style={{width:16,height:16,marginLeft:8,'--icon-ink':'currentColor',transform:'rotate(-90deg)'}}></ditto-icon></Button>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<Demo/>);
+</script>
+<div class="rule"><strong>Don't decorate buttons with icons.</strong> The label carries the action on its own — no leading arrow, sparkle or subject icon for visual interest. Add an icon <strong>only when it is functional or utility</strong>: a dropdown / split button (<code>ui-chevron-down</code>), a back action (<code>ui-back</code>), a dismiss, or a media control such as play&nbsp;/&nbsp;pause. Then use a <code>ui-*</code> utility icon at 16px, one per button, on the side that matches its meaning — and <strong>match the icon colour to the button's text colour</strong> (purple on outline, orange on ghost, white on primary&nbsp;/&nbsp;secondary; set <code>--icon-ink:currentColor</code>). Never a second colour inside a button.</div>
+<div class="note">Never add glows or drop shadows to buttons — in UI or creative assets. Use them exactly as shown.</div>
+</body>
+</html>

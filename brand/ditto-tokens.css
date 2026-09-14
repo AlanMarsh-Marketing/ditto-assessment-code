@@ -1,0 +1,387 @@
+/* ============================================================
+   Ditto Design System — tokens (flattened, single file)
+   Generated from styles.css + tokens/*.css
+   Drop-in replacement for: <link rel="stylesheet" href="styles.css">
+   Fonts: @font-face src paths below are relative to assets/fonts/
+   — adjust the paths if you place this file elsewhere.
+   ============================================================ */
+
+/* ---------- tokens/fonts.css ---------- */
+/* Ditto webfonts — Poppins (the brand typeface).
+   Self-hosted woff2 (latin subset) so consumers work offline.
+   Weights in brand use: Light 300, Regular 400, Medium 500, SemiBold 600, Bold 700. */
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('./fonts/poppins-300.woff2') format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/poppins-400.woff2') format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/poppins-500.woff2') format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./fonts/poppins-600.woff2') format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/poppins-700.woff2') format("woff2");
+}
+
+/* ---------- tokens/colors.css ---------- */
+/* ============================================================
+   Ditto — Colour tokens
+   Source: Ditto Brand Guidelines V2 (December 2025) + live decks.
+   The brand runs on a high-energy palette: Ditto Orange leads,
+   deep Purple grounds, Lime adds spark. Pale secondary tints are
+   for digital surfaces only.
+   ============================================================ */
+
+:root {
+  /* ---- Primary brand ---- */
+  --ditto-orange: #fd4e19;   /* primary brand colour — appears on every layout */
+  --ditto-purple: #350063;   /* deep purple — grounding, text on light, dark surfaces */
+  --ditto-lime:   #d6de24;   /* lime/chartreuse — spark, data, highlights */
+  --ditto-black:  #000000;
+  --ditto-white:  #ffffff;
+
+  /* ---- Orange ramp (tints/shades of the primary) ---- */
+  --orange-700: #c63a0f;
+  --orange-600: #e84415;
+  --orange-500: #fd4e19;     /* = --ditto-orange */
+  --orange-300: #ff8a63;
+  --orange-100: #ffd9cc;
+  --orange-050: #fff1ec;
+
+  /* ---- Purple ramp ---- */
+  --purple-900: #23003f;
+  --purple-700: #350063;     /* = --ditto-purple */
+  --purple-500: #5a2a8c;
+  --purple-300: #9b7bbf;
+  --purple-100: #e4d9f0;
+  --purple-050: #F9F4FF;
+
+  /* ---- Lime ramp ---- */
+  --lime-600: #aeb50f;
+  --lime-500: #d6de24;       /* = --ditto-lime */
+  --lime-300: #e8ee79;
+  --lime-100: #f2ffd6;       /* secondary pale lime (brand secondary) */
+
+  /* ---- Secondary digital tints (brand "secondary", primarily for digital use) ---- */
+  --tint-cyan: #e4ffff;
+  --tint-mint: #c1ffc7;
+  --tint-lime: #f2ffd6;
+
+  /* ---- Neutrals ---- */
+  --grey-900: #1a1a1a;
+  --grey-700: #3d3d3d;
+  --grey-600: #575757;
+  --grey-500: #757575;       /* brand "Mid Grey" — body/supporting copy */
+  --grey-400: #9e9e9e;
+  --grey-300: #cfcfcf;
+  --grey-200: #e6e6e6;
+  --grey-100: #f2f2f2;       /* brand "5% black" surface */
+  --grey-050: #fafafa;
+
+  /* ============================================================
+     Semantic aliases — reference these in components, not raw hex
+     ============================================================ */
+
+  /* Text */
+  --text-strong:   var(--ditto-purple);   /* headlines on light surfaces */
+  --text-body:     #000000;               /* primary body copy */
+  --text-muted:    #595959;               /* captions, labels, secondary text */
+  --text-on-dark:  var(--ditto-white);
+  --text-on-brand: var(--ditto-white);     /* text on orange/purple fills */
+  --text-accent:   var(--ditto-orange);
+
+  /* Surfaces */
+  --surface-page:    var(--ditto-white);
+  --surface-card:    var(--ditto-white);
+  --surface-subtle:  var(--grey-100);
+  --surface-dark:    var(--ditto-black);   /* chapter / divider / closing slides */
+  --surface-purple:  var(--ditto-purple);
+  --surface-brand:   var(--ditto-orange);
+
+  /* Lines & borders */
+  --border-subtle: #D7CCE0;  /* default divider and hairline stroke */
+  --border-default: var(--grey-300);
+  --border-strong: var(--ditto-purple);
+
+  /* ---- Brand icons ---- */
+  /* Icon linework reads --icon-ink; the small accent badge reads --icon-accent.
+     On white/light surfaces use the defaults below; on a PURPLE surface flip
+     --icon-ink to white (the <ditto-icon tone="on-purple"> helper does this).
+     Never place brand icons on an orange surface. */
+  --icon-ink:    var(--ditto-purple);   /* #350063 — linework */
+  --icon-accent: var(--ditto-orange);   /* #fd4e19 — accent badge */
+
+  /* Interactive */
+  --action-primary:        var(--ditto-orange);
+  --action-primary-hover:  var(--orange-600);
+  --action-primary-active: var(--orange-700);
+  --action-secondary:        var(--ditto-purple);
+  --action-secondary-hover:  var(--purple-900);
+  --focus-ring:            var(--ditto-orange);
+
+  /* Feedback */
+  --success: #2e9e5b;
+  --warning: var(--ditto-orange);
+  --danger:  #d8362a;
+  --info:    var(--ditto-purple);
+
+  /* ---- Data viz series (matches the master deck charts) ---- */
+  --chart-1: var(--ditto-purple);   /* Series 1 */
+  --chart-2: var(--ditto-orange);   /* Series 2 */
+  --chart-3: var(--ditto-lime);     /* Series 3 */
+  --chart-grid: var(--grey-200);    /* gridlines */
+  --chart-axis: var(--grey-500);    /* axis labels */
+
+  /* ---- Table ---- */
+  --table-head:    var(--ditto-purple);  /* header row fill */
+  --table-head-fg: var(--ditto-white);
+  --table-zebra:   var(--grey-100);      /* alternating row tint */
+}
+
+/* ---------- tokens/typography.css ---------- */
+/* ============================================================
+   Ditto — Typography tokens
+   Typeface: Poppins (only). SemiBold for headlines & stats,
+   Medium for subheads, Regular/Light for body. Never all-caps body.
+   Scale mirrors the slide template (hero 45–66pt, stat 66pt+,
+   title 24–27pt, body 14–16pt, caption 8–11pt) re-expressed for web.
+   ============================================================ */
+
+:root {
+  /* Families */
+  --font-sans: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-sans);
+
+  /* Weights */
+  --fw-light: 300;     /* @kind other */
+  --fw-regular: 400;   /* @kind other */
+  --fw-medium: 500;    /* @kind other */
+  --fw-semibold: 600;  /* @kind other */
+  --fw-bold: 700; /* @kind other */ /* not used in Ditto brand */
+
+  /* Type scale (web px) */
+  --fs-hero: 64px;     /* title-slide hero headline */
+  --fs-display: 48px;  /* big statement / stat callout */
+  --fs-h1: 40px;
+  --fs-h2: 32px;
+  --fs-h3: 26px;       /* slide title */
+  --fs-h4: 21px;
+  --fs-lead: 19px;     /* lead paragraph */
+  --fs-body: 16px;     /* default body */
+  --fs-sm: 14px;
+  --fs-caption: 11px;  /* captions, secondary text */
+  --fs-label: 11px;    /* small labels */
+
+  /* Line heights */
+  --lh-tight: 1.05; /* @kind other */
+  --lh-snug: 1.18; /* @kind other */
+  --lh-normal: 1.5; /* @kind other */
+  --lh-relaxed: 1.65; /* @kind other */
+
+  /* Letter spacing */
+  --ls-tight: -0.02em; /* @kind other */
+  --ls-normal: 0; /* @kind other */
+  --ls-eyebrow: 0.04em; /* NEVER capitalise eyebrows — sentence case only, no all-caps @kind other */
+
+  /* Semantic roles */
+  --title-weight: var(--fw-medium); /* base: H1 Light, H2 Regular, H3/H4 Medium @kind other */
+  --subtitle-weight: var(--fw-medium);   /* @kind other */
+  --body-weight: var(--fw-regular);       /* @kind other */
+}
+
+/* ---------- tokens/spacing.css ---------- */
+/* ============================================================
+   Ditto — Spacing & layout tokens
+   8px base grid. Generous whitespace; the brand "safe zone"
+   (clear space around the logo) translates to generous padding.
+   ============================================================ */
+
+:root {
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Component padding */
+  --pad-button-y: 12px;
+  --pad-button-x: 24px;
+  --pad-card: 28px;
+
+  /* Containers */
+  --container-max: 1200px;
+  --gutter: 24px;
+
+  /* Logo clear space (brand "safe zone") — min padding before logo */
+  --logo-safe-zone: 24px;
+}
+
+/* ---------- tokens/effects.css ---------- */
+/* ============================================================
+   Ditto — Effects: radii, shadows, motion
+   The brand reads "approachable & human": rounded edges wherever
+   possible, softened line endings, pill shapes for tags/labels.
+   Elevation is FLAT — surfaces are defined by fills and 1px hairline
+   borders, not drop shadows. Motion is smooth and confident, no bounce.
+   ============================================================ */
+
+:root {
+  /* Corner radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;     /* default card radius */
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;  /* tags, chips, map labels, dot-graphic pills */
+  --radius-circle: 50%;
+
+  /* Elevation — flat by design. Surfaces use fills + hairline borders,
+     never drop shadows. Tokens are kept (as `none`) so existing
+     references stay valid; do not reintroduce drop shadows. */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-focus: 0 0 0 1px #fd4e19;  /* 1pt orange focus ring (accessibility, not elevation) */
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);  /* @kind other */
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);       /* @kind other */
+  --ease-in: cubic-bezier(0.4, 0.0, 1, 1);          /* @kind other */
+  --dur-fast: 120ms;    /* @kind other */
+  --dur-normal: 220ms;  /* @kind other */
+  --dur-slow: 360ms;    /* @kind other */
+
+  /* Interaction deltas (documented conventions) */
+  --hover-lift: -2px;     /* cards lift slightly on hover */
+  --press-scale: 0.97; /* @kind other */
+
+  /* Aperture — the signature shape derived from Ditto's letterforms.
+     Source of truth: uploads/aperture shape.svg (590×610 reference).
+
+     SHAPE RULES (from the SVG path):
+     • Top-right corner:  SHARP 90°
+     • Bottom-right corner: SHARP 90°
+     • Bottom-left corner: ONLY rounded corner — large bezier arc
+     • Inner notch corner (top-left step): SHARP 90°
+     • Notch dimensions: ~25.5% of width wide, ~17.2% of height tall
+
+     PLACEMENT: always flush to BOTTOM and RIGHT edges of the page.
+     CLEARANCE: minimum 32px gap to any text — never overlap content.
+
+     Token uses shape() (scalable %, Chrome 132+ / Firefox 126+).
+     For pixel-perfect use, compute clip-path: path() per element W×H:
+       M W,0 V H H,(W×0.179) C(W×0.073),(H×0.998) (W×0.007),(H×0.946) 0,(H×0.835) V(H×0.172) H(W×0.255) V 0 H W Z */
+  --aperture-tl: shape(
+    from 100% 0%,
+    line to 100% 100%,
+    line to 17.9% 100%,
+    arc to 0% 83.5% of 17.9% 16.5%,
+    line to 0% 17.2%,
+    line to 25.5% 17.2%,
+    line to 25.5% 0%,
+    close
+  ); /* @kind other */
+}
+
+/* ---------- tokens/base.css ---------- */
+/* ============================================================
+   Ditto — Base layer: light reset + element defaults + helpers.
+   Sets Poppins, body colour, and a few brand utility classes.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--title-weight);
+  line-height: var(--lh-snug);
+  color: var(--text-strong);
+  text-wrap: balance;
+}
+
+p { margin: 0; text-wrap: pretty; }
+
+a {
+  color: var(--text-accent);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+a:hover { color: var(--action-primary-hover); }
+
+img { max-width: 100%; display: block; }
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-xs);
+}
+
+/* ---- Brand utility classes ---- */
+.ditto-eyebrow {
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+
+.ditto-aperture {
+  clip-path: var(--aperture-tl);
+}
+
+/* The signature orange dot (accentuated dot from the logo). */
+.ditto-dot {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: var(--radius-circle);
+  background: var(--ditto-orange);
+  vertical-align: baseline;
+}
+

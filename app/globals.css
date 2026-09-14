@@ -1,26 +1,117 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Ditto Design System tokens — the single source of truth for colour, radii,
+   spacing and type scale. Never hardcode hex values or invent a palette;
+   read brand/readme.md and brand/SKILL.md before adding anything here.
+   The @font-face block in this file is a harmless fallback for any static
+   guideline card opened standalone — the app itself loads Poppins through
+   next/font/local (see lib/fonts.ts) for optimised, self-hosted delivery. */
+@import "../brand/ditto-tokens.css";
 
+/* Wire the token file into Tailwind's theme so utilities (bg-ditto-orange,
+   rounded-md, text-h2, font-sans, …) resolve to brand values instead of
+   Tailwind's defaults. Values are kept as var() references, not inlined,
+   so a token change in brand/ditto-tokens.css propagates everywhere. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Font — Poppins, loaded by next/font/local; falls back to the literal
+     family (for the static guideline cards) then the system stack. */
+  --font-sans: var(--font-poppins), "Poppins", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* Primary brand */
+  --color-ditto-orange: var(--ditto-orange);
+  --color-ditto-purple: var(--ditto-purple);
+  --color-ditto-lime: var(--ditto-lime);
+  --color-ditto-black: var(--ditto-black);
+  --color-ditto-white: var(--ditto-white);
+
+  /* Ramps */
+  --color-orange-700: var(--orange-700);
+  --color-orange-600: var(--orange-600);
+  --color-orange-500: var(--orange-500);
+  --color-orange-300: var(--orange-300);
+  --color-orange-100: var(--orange-100);
+  --color-orange-050: var(--orange-050);
+  --color-purple-900: var(--purple-900);
+  --color-purple-700: var(--purple-700);
+  --color-purple-500: var(--purple-500);
+  --color-purple-300: var(--purple-300);
+  --color-purple-100: var(--purple-100);
+  --color-purple-050: var(--purple-050);
+  --color-lime-600: var(--lime-600);
+  --color-lime-500: var(--lime-500);
+  --color-lime-300: var(--lime-300);
+  --color-lime-100: var(--lime-100);
+
+  /* Secondary digital tints */
+  --color-tint-cyan: var(--tint-cyan);
+  --color-tint-mint: var(--tint-mint);
+  --color-tint-lime: var(--tint-lime);
+
+  /* Neutrals */
+  --color-grey-900: var(--grey-900);
+  --color-grey-700: var(--grey-700);
+  --color-grey-600: var(--grey-600);
+  --color-grey-500: var(--grey-500);
+  --color-grey-400: var(--grey-400);
+  --color-grey-300: var(--grey-300);
+  --color-grey-200: var(--grey-200);
+  --color-grey-100: var(--grey-100);
+  --color-grey-050: var(--grey-050);
+
+  /* Semantic aliases — prefer these over raw palette names in app code */
+  --color-text-strong: var(--text-strong);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-dark: var(--text-on-dark);
+  --color-text-on-brand: var(--text-on-brand);
+  --color-text-accent: var(--text-accent);
+  --color-surface-page: var(--surface-page);
+  --color-surface-card: var(--surface-card);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-purple: var(--surface-purple);
+  --color-surface-brand: var(--surface-brand);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-action-primary: var(--action-primary);
+  --color-action-primary-hover: var(--action-primary-hover);
+  --color-action-primary-active: var(--action-primary-active);
+  --color-action-secondary: var(--action-secondary);
+  --color-action-secondary-hover: var(--action-secondary-hover);
+  --color-focus-ring: var(--focus-ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  /* Radii — overrides Tailwind's defaults so rounded-md etc. match brand */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-pill: var(--radius-pill);
+
+  /* Type scale — brief's px scale, exposed as text-h1 / text-h2 / … */
+  --text-hero: var(--fs-hero);
+  --text-display: var(--fs-display);
+  --text-h1: var(--fs-h1);
+  --text-h2: var(--fs-h2);
+  --text-h3: var(--fs-h3);
+  --text-h4: var(--fs-h4);
+  --text-lead: var(--fs-lead);
+  --text-body: var(--fs-body);
+  --text-sm: var(--fs-sm);
+  --text-caption: var(--fs-caption);
+  --text-label: var(--fs-label);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Tailwind's default spacing scale (p-4 = 16px, gap-6 = 24px, …) already
+   matches brand/ditto-tokens.css's 8px-grid --space-* tokens 1:1 — use the
+   standard Tailwind spacing utilities rather than inventing new ones.
+   Standard Tailwind font-weight utilities also line up exactly with the
+   brand weights: font-light (300), font-normal (400), font-medium (500),
+   font-semibold (600). Never use font-bold / font-extrabold — the brand
+   does not use weight 700. */

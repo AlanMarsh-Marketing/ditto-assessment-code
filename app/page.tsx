@@ -1,69 +1,115 @@
-import Image from "next/image";
+import { Button, Card, Badge, StatCallout, BrandIcon, Logo } from "@/components/ds";
 
+/**
+ * Brand system sampler — not a quiz screen. Proves the tokens, fonts, icons
+ * and ported design-system components are wired up correctly before any
+ * quiz-taking UI gets built on top of them (see CLAUDE.md / brand/BRAND.md).
+ */
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="min-h-screen bg-surface-page">
+      <div className="mx-auto max-w-[1200px] px-6 py-16">
+        <header className="flex items-center justify-between">
+          <Logo variant="color" height={32} />
+          <Badge tone="orange" soft>
+            Brand check
+          </Badge>
+        </header>
+
+        <div className="mt-16">
+          <p className="ditto-eyebrow">Ditto assessments</p>
+          <h1 className="mt-2 text-h1 font-light text-text-strong">
+            The quiz platform, wearing its own brand
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-4 max-w-[640px] text-lead text-text-body">
+            This page renders the ported design-system components against the
+            real tokens — colour, type, radii and icons all come from{" "}
+            <code className="text-sm">brand/ditto-tokens.css</code>, nothing
+            here is hand-picked.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        {/* Buttons */}
+        <section className="mt-16">
+          <h2 className="text-h4 font-semibold text-text-strong">Buttons</h2>
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <Button variant="primary">Start assessment</Button>
+            <Button variant="secondary">Save and continue</Button>
+            <Button variant="outline">Previous</Button>
+            <Button variant="ghost">Skip</Button>
+          </div>
+        </section>
+
+        {/* Cards — five permitted styles */}
+        <section className="mt-16">
+          <h2 className="text-h4 font-semibold text-text-strong">Cards</h2>
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Card tone="white">
+              <p className="text-sm font-medium text-text-strong">Style 1 — hairline</p>
+              <p className="mt-2 text-sm text-text-muted">No fill, subtle purple stroke.</p>
+            </Card>
+            <Card tone="subtle" style={{ background: "var(--purple-050)" }}>
+              <p className="text-sm font-medium text-text-strong">Style 2 — tint</p>
+              <p className="mt-2 text-sm text-text-muted">#F9F4FF fill, no stroke.</p>
+            </Card>
+            <Card tone="subtle" style={{ background: "var(--tint-cyan)" }}>
+              <p className="text-sm font-medium text-text-strong">Style 3 — cyan</p>
+              <p className="mt-2 text-sm text-text-muted">Tint cyan fill, no stroke.</p>
+            </Card>
+            <Card tone="purple">
+              <p className="text-sm font-medium">Style 4 — purple</p>
+              <p className="mt-2 text-sm" style={{ color: "rgba(255,255,255,0.8)" }}>
+                Brand purple fill, white text.
+              </p>
+            </Card>
+          </div>
+        </section>
+
+        {/* Stat callouts */}
+        <section className="mt-16">
+          <h2 className="text-h4 font-semibold text-text-strong">Stat callouts</h2>
+          <div className="mt-6 flex flex-wrap gap-16">
+            <StatCallout value="92" unit="%" label="Average pass rate" />
+            <StatCallout value="4m 12s" label="Median completion time" />
+            <StatCallout value="6" label="Questions answered" />
+          </div>
+        </section>
+
+        {/* Icons */}
+        <section className="mt-16">
+          <h2 className="text-h4 font-semibold text-text-strong">Brand icons</h2>
+          <div className="mt-6 flex flex-wrap items-center gap-8">
+            <BrandIcon name="approved" size={40} />
+            <BrandIcon name="protected" size={40} />
+            <BrandIcon name="fingerprint" size={40} />
+            <BrandIcon name="credentials" size={40} />
+            <div
+              className="flex items-center gap-8 rounded-md bg-ditto-purple px-6 py-4"
+              style={{ background: "var(--ditto-purple)" }}
+            >
+              <BrandIcon name="approved" size={40} tone="on-purple" />
+              <BrandIcon name="protected" size={40} tone="on-purple" />
+            </div>
+          </div>
+        </section>
+
+        {/* Writing style — orange bullet markers, sentence case */}
+        <section className="mt-16 max-w-[560px]">
+          <h2 className="text-h4 font-semibold text-text-strong">Before you start</h2>
+          <ul className="mt-4 list-none space-y-2 p-0">
+            {[
+              "Answer every question before moving on",
+              "Your progress saves automatically on this device",
+              "You can only submit once per attempt",
+            ].map((item) => (
+              <li key={item} className="flex gap-2 text-body text-text-body">
+                <span style={{ color: "var(--ditto-orange)" }}>•</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </main>
   );
 }
