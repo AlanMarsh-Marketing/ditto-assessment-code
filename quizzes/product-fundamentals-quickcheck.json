@@ -1,0 +1,64 @@
+{
+  "slug": "product-fundamentals-quickcheck",
+  "title": "Product fundamentals quick check",
+  "description": "A fast, timed check of the Ditto product basics — four products, one platform.",
+  "status": "draft",
+  "audience": "New starters",
+  "settings": {
+    "showFeedbackImmediately": true,
+    "showScoreAtEnd": true,
+    "passMark": 80,
+    "shuffleQuestions": false,
+    "timePerQuestionSeconds": 30
+  },
+  "identityFields": [
+    { "key": "firstName", "label": "First name", "type": "text", "required": true },
+    { "key": "email", "label": "Work email", "type": "email", "required": true }
+  ],
+  "questions": [
+    {
+      "id": "tf-1",
+      "type": "trueFalse",
+      "prompt": "Ditto Intelligence is a product a customer buys on its own, separate from Verify, Authenticate and Protect.",
+      "tags": ["product-knowledge"],
+      "correctAnswer": false,
+      "explanation": "Ditto Intelligence is the shared data layer underneath the other products, not a standalone purchase."
+    },
+    {
+      "id": "single-1",
+      "type": "single",
+      "prompt": "Which product is the right fit for a customer asking: \"how do we stop the same fraudster opening a new account after we've already banned them?\"",
+      "tags": ["product-knowledge", "Ditto Protect"],
+      "options": [
+        { "id": "a", "label": "Ditto Protect" },
+        { "id": "b", "label": "Ditto ID" },
+        { "id": "c", "label": "Ditto Verify" },
+        { "id": "d", "label": "Ditto Authenticate" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Ditto Protect is built around fraud and risk signals, including repeat-offender detection across accounts."
+    },
+    {
+      "id": "order-2",
+      "type": "order",
+      "prompt": "Put these steps of a typical Ditto Verify check in the order they happen.",
+      "tags": ["product-knowledge", "Ditto Verify"],
+      "items": [
+        { "id": "capture", "label": "Customer photographs their ID document" },
+        { "id": "extract", "label": "Document data is extracted and checked for signs of tampering" },
+        { "id": "biometric", "label": "A selfie is matched against the document photo" },
+        { "id": "result", "label": "A pass/fail result is returned to the customer's system" }
+      ],
+      "correctOrder": ["capture", "extract", "biometric", "result"],
+      "explanation": "Capture, then document checks, then biometric match, then result — each step can fail independently."
+    },
+    {
+      "id": "confidence-2",
+      "type": "confidence",
+      "prompt": "How confident do you feel explaining the difference between the four Ditto products to a customer right now?",
+      "tags": ["self-assessment"],
+      "lowLabel": "Not confident",
+      "highLabel": "Very confident"
+    }
+  ]
+}

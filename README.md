@@ -5,10 +5,20 @@ enablement. Next.js + TypeScript + Tailwind, brand system self-contained in
 `brand/`, Notion as the results backend (added in a later step). Full spec:
 [`../ditto-quiz-tool-prompt-final.md`](../ditto-quiz-tool-prompt-final.md).
 
-**Status: step 1 of 5** — repo scaffold, brand tokens wired into Tailwind,
-one branded static page (`/`) proving the design system renders correctly.
-No quiz content, no Notion integration yet. See `CLAUDE.md`'s "Build order"
-for what's next.
+**Status: step 2 of 5** — repo scaffold + brand tokens (step 1) and the quiz
+content model (step 2) are done: a Zod schema (`lib/quiz-schema.ts`), three
+example quizzes in `/quizzes`, and `npm run validate:quizzes` wired in as a
+`prebuild` step so a bad quiz file fails the build loudly. No Notion
+integration or taking experience yet. See `CLAUDE.md`'s "Build order" for
+what's next.
+
+## Adding a quiz
+
+Add a new `/quizzes/<slug>.json` (slug must match the filename) following
+the shape in `lib/quiz-schema.ts` — the three example files are the easiest
+starting point to copy. Run `npm run validate:quizzes` to check it (or just
+`npm run build`, which runs it automatically); a bad file prints exactly
+which field is wrong rather than failing silently.
 
 ## Local setup
 

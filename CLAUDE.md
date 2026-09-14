@@ -40,20 +40,52 @@ extending rather than duplicating them.
   Design background Notion writes around Hobby's ~10s function duration cap
   (use Next's `after()`, not an assumed long-running process).
 
-## Content model (quiz schema) — added in step 2
+## Content model (quiz schema)
 
-Not yet built. Each quiz will be a single JSON file in `/quizzes/<slug>.json`,
-validated against a Zod schema at build time. See the "Content model" section
-of `../ditto-quiz-tool-prompt-final.md` for the full field list
-(`identityFields`, question types, `settings`, etc.) — this section of
-CLAUDE.md should be filled in with the concrete schema summary once step 2
-lands, so future sessions don't have to re-read the full prompt.
+Each quiz is `/quizzes/<slug>.json`. `lib/quiz-schema.ts` is the Zod schema
+(source of truth for field names/rules — read it rather than trusting this
+summary to stay perfectly in sync); `lib/quizzes.ts` loads and validates by
+filename slug (and checks the file's `slug` field matches the filename).
+`npm run validate:quizzes` (via `tsx`) validates every file and is wired in
+as `prebuild`, so `npm run build` fails loudly on a bad quiz — no separate
+step to remember.
 
-`passMark` is a **percentage (0–100) or `null`** compared against
-`Score / Max score`, not a raw point total — chosen because quizzes vary in
-question count/mix, so percentage is the only unit that stays meaningful
-across quizzes. `order` questions score all-or-nothing (exact sequence
-required), matching `single`/`multi`/`trueFalse`.
+- **Quiz**: `slug` (kebab-case, must match the filename), `title`,
+  `description`, `status` (`draft`/`live`/`closed`), `audience` (free text),
+  `settings`, `identityFields` (≥1), `questions` (≥1).
+- **`settings`**: `showFeedbackImmediately`, `showScoreAtEnd` (bool),
+  `passMark` — **percentage 0–100, or `null` for no pass mark** (chosen over
+  a raw score because quizzes vary in question count/mix, so percentage is
+  the only unit that stays meaningful across all of them; `null` is fully
+  supported for quizzes that shouldn't gate on a score at all — see
+  `objection-handling-scenarios.json`), `shuffleQuestions` (bool),
+  `timePerQuestionSeconds` (number or `null`).
+- **`identityFields`**: ordered `{key, label, type: text|email|select,
+  required, options?}` — `options` required (non-empty) iff `type ===
+  "select"`, rejected otherwise. Keys must be unique per quiz.
+- **Questions** (`lib/quiz-schema.ts`'s `QuestionSchema`, a discriminated
+  union on `type`): `single` (one correct option), `multi` (correct option
+  set, all-or-nothing), `trueFalse`, `order` (`items` + `correctOrder` —
+  validated as an exact permutation), `shortText` (free text, unscored),
+  `confidence` (fixed 1–5 scale, unscored). Every type shares `id` (unique
+  per quiz), `prompt`, optional `context` (scenario text), optional
+  `explanation`, optional `tags`. `SCORED_QUESTION_TYPES` /
+  `isScoredQuestion()` in `lib/quiz-schema.ts` is the one place that encodes
+  which types count toward Score/Max score — `shortText` and `confidence`
+  never do.
+- Cross-field checks (superRefine, not just per-field): unique question ids,
+  unique identity-field keys, option/item ids referenced by
+  `correctOptionId`/`correctOptionIds`/`correctOrder` must actually exist and
+  contain no duplicates, `correctOrder` must be an exact permutation of
+  `items`.
+- **Example quizzes**: `partner-onboarding-basics` (live, passMark 70,
+  single/multi/trueFalse/shortText), `objection-handling-scenarios` (live, no
+  passMark, shuffled, 60s/question, includes `order` + `confidence` +
+  scenario `context`), `product-fundamentals-quickcheck` (**draft** — only
+  reachable via `?preview=1` once the taking experience exists, 30s/question,
+  trueFalse/single/order/confidence). Between them all 6 question types and
+  both `passMark` states are exercised — replace their content, don't
+  restructure their shape, when adding a real quiz.
 
 ## Notion conventions — added in step 3
 
@@ -68,7 +100,7 @@ Working through `../ditto-quiz-tool-prompt-final.md`'s build order, stopping
 for review after each step:
 
 1. ✅ Repo scaffold, tokens wired into Tailwind, branded static page (`/`).
-2. Quiz schema (Zod), three example quiz files.
+2. ✅ Quiz schema (Zod), three example quiz files.
 3. `setup:notion` script, Responses + Answers databases.
 4. Taking experience end to end, writing to Notion.
 5. Embed route (`/embed/[slug]`) + `public/embed.js` snippet.

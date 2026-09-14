@@ -1,0 +1,62 @@
+{
+  "slug": "objection-handling-scenarios",
+  "title": "Objection handling scenarios",
+  "description": "Scenario-based practice for handling the objections that come up most often on partner and customer calls.",
+  "status": "live",
+  "audience": "Internal sales",
+  "settings": {
+    "showFeedbackImmediately": true,
+    "showScoreAtEnd": true,
+    "passMark": null,
+    "shuffleQuestions": true,
+    "timePerQuestionSeconds": 60
+  },
+  "identityFields": [{ "key": "firstName", "label": "First name", "type": "text", "required": true }],
+  "questions": [
+    {
+      "id": "scenario-1",
+      "type": "single",
+      "context": "A prospect says: \"We already have a manual KYC process and it works fine — why would we change it?\"",
+      "prompt": "What's the strongest first response?",
+      "tags": ["objection-handling", "Verify"],
+      "options": [
+        { "id": "a", "label": "Ask what \"works fine\" is costing them in time and drop-off today" },
+        { "id": "b", "label": "Tell them their current process is outdated" },
+        { "id": "c", "label": "Immediately offer a discount to make switching easier" },
+        { "id": "d", "label": "Move on to a different prospect" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Start by understanding their real cost — time, drop-off, compliance risk — before positioning Ditto against it. Don't lead with criticism or price."
+    },
+    {
+      "id": "confidence-1",
+      "type": "confidence",
+      "prompt": "How confident do you feel handling this kind of objection on a live call?",
+      "tags": ["self-assessment"],
+      "lowLabel": "Not confident",
+      "highLabel": "Very confident"
+    },
+    {
+      "id": "order-1",
+      "type": "order",
+      "prompt": "Put these four steps of handling an objection in the right order.",
+      "tags": ["objection-handling", "framework"],
+      "items": [
+        { "id": "acknowledge", "label": "Acknowledge the concern without agreeing or dismissing it" },
+        { "id": "clarify", "label": "Ask a question to understand what's really behind it" },
+        { "id": "respond", "label": "Respond with a specific, relevant point — not a generic pitch" },
+        { "id": "confirm", "label": "Confirm the concern is resolved before moving on" }
+      ],
+      "correctOrder": ["acknowledge", "clarify", "respond", "confirm"],
+      "explanation": "Acknowledge, then clarify, then respond, then confirm. Jumping straight to a response before clarifying is the most common mistake."
+    },
+    {
+      "id": "reflection-1",
+      "type": "shortText",
+      "prompt": "Describe a recent call where an objection came up. What would you do differently next time?",
+      "tags": ["free-response", "reflection"],
+      "placeholder": "A sentence or two is fine.",
+      "maxLength": 500
+    }
+  ]
+}

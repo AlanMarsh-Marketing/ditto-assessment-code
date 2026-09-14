@@ -1,0 +1,71 @@
+{
+  "slug": "partner-onboarding-basics",
+  "title": "Ditto Connect partner onboarding basics",
+  "description": "A short check that new Ditto Connect partners understand the fundamentals of identity verification before they start referring customers.",
+  "status": "live",
+  "audience": "Ditto Connect partners",
+  "settings": {
+    "showFeedbackImmediately": true,
+    "showScoreAtEnd": true,
+    "passMark": 70,
+    "shuffleQuestions": false,
+    "timePerQuestionSeconds": null
+  },
+  "identityFields": [
+    { "key": "firstName", "label": "First name", "type": "text", "required": true },
+    {
+      "key": "partnerCompany",
+      "label": "Partner company",
+      "type": "select",
+      "required": true,
+      "options": ["Acme Bank", "Northwind Payments", "Globex Identity Services", "Other"]
+    },
+    { "key": "email", "label": "Work email", "type": "email", "required": true }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "single",
+      "prompt": "Which Ditto product verifies that a government-issued ID document is genuine?",
+      "tags": ["product-knowledge", "Ditto Verify"],
+      "options": [
+        { "id": "a", "label": "Ditto Verify" },
+        { "id": "b", "label": "Ditto Protect" },
+        { "id": "c", "label": "Ditto Authenticate" },
+        { "id": "d", "label": "Ditto Intelligence" }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Ditto Verify checks that a document is genuine and matches the person presenting it. Authenticate handles ongoing sign-in, Protect covers fraud and risk signals, Intelligence is the shared data layer underneath all three."
+    },
+    {
+      "id": "q2",
+      "type": "multi",
+      "prompt": "Which of the following are things you should tell a prospective customer about Ditto during a first conversation? Select all that apply.",
+      "tags": ["objection-handling"],
+      "options": [
+        { "id": "a", "label": "Ditto supports document and biometric verification" },
+        { "id": "b", "label": "Ditto guarantees zero fraud for any customer that signs up" },
+        { "id": "c", "label": "Ditto covers Verify, Authenticate, Protect and ID under one platform" },
+        { "id": "d", "label": "Onboarding typically starts with a scoping call, not a contract" }
+      ],
+      "correctOptionIds": ["a", "c", "d"],
+      "explanation": "Never promise a guarantee we can't back — \"zero fraud\" isn't a claim we make. The other three are accurate and safe to lead with."
+    },
+    {
+      "id": "q3",
+      "type": "trueFalse",
+      "prompt": "A partner can share their own Ditto login credentials with a customer so the customer can test the platform.",
+      "tags": ["compliance"],
+      "correctAnswer": false,
+      "explanation": "Credentials are never shared between accounts — set the customer up with their own sandbox access instead."
+    },
+    {
+      "id": "q4",
+      "type": "shortText",
+      "prompt": "In your own words, what's the one-sentence pitch you'd give a customer for why they should use Ditto?",
+      "tags": ["free-response"],
+      "placeholder": "e.g. Ditto lets you verify who someone really is in seconds, not days.",
+      "maxLength": 280
+    }
+  ]
+}
