@@ -5,12 +5,11 @@ enablement. Next.js + TypeScript + Tailwind, brand system self-contained in
 `brand/`, Notion as the results backend (added in a later step). Full spec:
 [`../ditto-quiz-tool-prompt-final.md`](../ditto-quiz-tool-prompt-final.md).
 
-**Status: step 2 of 5** — repo scaffold + brand tokens (step 1) and the quiz
-content model (step 2) are done: a Zod schema (`lib/quiz-schema.ts`), three
-example quizzes in `/quizzes`, and `npm run validate:quizzes` wired in as a
-`prebuild` step so a bad quiz file fails the build loudly. No Notion
-integration or taking experience yet. See `CLAUDE.md`'s "Build order" for
-what's next.
+**Status: step 3 of 5** — repo scaffold + brand tokens (step 1), the quiz
+content model (step 2), and the Notion backend (step 3) are done. The
+Responses and Answers databases already exist under the "Ditto Assessments"
+Notion page. No taking experience yet — nothing writes to Notion until step
+4. See `CLAUDE.md`'s "Build order" for what's next.
 
 ## Adding a quiz
 
@@ -38,11 +37,21 @@ Everything under `brand/` is the Ditto Design System handoff bundle
 font, radius and spacing value must come from `brand/ditto-tokens.css`.
 Ported, ready-to-use React components live in `components/ds/`.
 
-## Env vars
+## Notion backend
 
-None yet — `NOTION_TOKEN`, `NOTION_PARENT_PAGE_ID`, `NOTION_RESPONSES_DB_ID`
-and `NOTION_ANSWERS_DB_ID` land with the Notion setup step, along with a
-`.env.example`.
+`npm run setup:notion` creates the Responses and Answers databases under
+`NOTION_PARENT_PAGE_ID` (see `.env.example` for the four required vars) — it's
+idempotent, safe to re-run. It only creates the databases and their
+properties; Notion's API can't create saved views, so create these by hand
+once, in the Notion UI (the setup script prints this same list):
+
+- Responses grouped by Quiz, sorted by Submitted descending
+- Responses filtered to Passed = false
+- Answers grouped by Question ID, filtered to one quiz — distractor analysis
+- Answers grouped by Tags, with the Correct checkbox rolled up — topic-level weakness
+- Answers filtered to Type = shortText — free text in one place for Notion AI to summarise
+
+Nothing writes to these yet — that's step 4 (the taking experience).
 
 ## Deploy
 

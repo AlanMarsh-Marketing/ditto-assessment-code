@@ -87,12 +87,37 @@ step to remember.
   both `passMark` states are exercised — replace their content, don't
   restructure their shape, when adding a real quiz.
 
-## Notion conventions — added in step 3
+## Notion conventions
 
-Not yet built. `setup:notion` script, the Responses/Answers databases, and
-the write path (concurrency-limited, retried, logged on failure) land in
-step 3 — see the "Notion setup" and "Writing responses" sections of the
-build prompt. Record the concrete DB property names/IDs here once created.
+`npm run setup:notion` (`scripts/setup-notion.ts`) creates the Responses and
+Answers databases as children of `NOTION_PARENT_PAGE_ID`, with the exact
+properties from the build prompt's "Notion setup" tables — read that script
+rather than this summary for the authoritative property list. It's
+idempotent: it looks for existing `child_database` blocks titled "Responses"
+/ "Answers" under the parent page and reports their ids instead of
+duplicating them; if it finds only one of the two, it stops rather than
+guessing. Real ids are in the untracked `.env` (never commit them — see
+`.env.example` for the shape); this repo's actual databases already exist
+under the "Ditto Assessments" Notion page.
+
+**Data sources — a wrinkle worth knowing.** `@notionhq/client` (installed:
+v5.x) defaults to Notion API version `2025-09-03`, which introduced "data
+sources" as a layer under databases — a database's actual properties/rows
+live on its data source, and page creation/relations/queries all target a
+`data_source_id`, not the `database_id` directly. `NOTION_RESPONSES_DB_ID` /
+`NOTION_ANSWERS_DB_ID` stay plain database ids (matching the original spec),
+and `lib/notion.ts`'s `getPrimaryDataSourceId(databaseId)` resolves the one
+data source under each at runtime (cached per process) — always go through
+that helper rather than assuming a database id works directly as a
+`data_source_id` in a new call. The "Answers" relation on Responses and the
+"Response" relation on Answers were created together as one dual-property
+relation (`scripts/setup-notion.ts`), so both sides stay in sync
+automatically.
+
+The write path (queued/concurrency-limited answer writes, retried, logged
+on total failure) lands in step 4 — see the "Writing responses" section of
+the build prompt. `lib/notion.ts` already has a small `withRetry()` helper
+for that.
 
 ## Build order
 
@@ -101,6 +126,7 @@ for review after each step:
 
 1. ✅ Repo scaffold, tokens wired into Tailwind, branded static page (`/`).
 2. ✅ Quiz schema (Zod), three example quiz files.
-3. `setup:notion` script, Responses + Answers databases.
+3. ✅ `setup:notion` script, Responses + Answers databases (created — see
+   "Notion conventions" above).
 4. Taking experience end to end, writing to Notion.
 5. Embed route (`/embed/[slug]`) + `public/embed.js` snippet.
