@@ -16,3 +16,5 @@ export { ApertureImage, APERTURE_CROPS, apertureClipPath } from "./ApertureImage
 export type { ApertureImageProps } from "./ApertureImage";
 export { BrandIcon } from "./BrandIcon";
 export type { BrandIconProps } from "./BrandIcon";
+export { FormField } from "./FormField";
+export type { FormFieldProps } from "./FormField";

@@ -37,8 +37,11 @@ extending rather than duplicating them.
   `text-caption` utilities expose the brand type scale.
 - Hosting: Vercel Hobby (free) tier for now, no custom domain yet — deploys
   to the default `*.vercel.app` URL until `learn.ditto.id` DNS is ready.
-  Design background Notion writes around Hobby's ~10s function duration cap
-  (use Next's `after()`, not an assumed long-running process).
+  `submitQuizAttempt` (`app/q/[slug]/actions.ts`) does the Notion writes
+  in-process rather than via `after()` — the client just doesn't `await` the
+  action before moving to the end screen (see "Taking experience" below), so
+  the writes still complete inside the same invocation, well inside Hobby's
+  function-duration cap for a handful of small API calls.
 
 ## Content model (quiz schema)
 
@@ -114,10 +117,68 @@ that helper rather than assuming a database id works directly as a
 relation (`scripts/setup-notion.ts`), so both sides stay in sync
 automatically.
 
-The write path (queued/concurrency-limited answer writes, retried, logged
-on total failure) lands in step 4 — see the "Writing responses" section of
-the build prompt. `lib/notion.ts` already has a small `withRetry()` helper
-for that.
+The write path (`app/q/[slug]/actions.ts`'s `submitQuizAttempt`) creates the
+Response page, then one Answer page per question via
+`mapWithConcurrency(quiz.questions, 3, …)` (`lib/concurrency.ts`), each
+wrapped in `withRetry()` (`lib/notion.ts`, 2 retries, exponential backoff).
+It **never trusts a client-sent score** — `lib/scoring.ts`'s pure functions
+(`scoreQuiz`, `isAnswerCorrect`, `formatAnswerText`) are the one place
+scoring/formatting logic lives, called independently by both the client
+(instant end-screen render) and the server action (the authoritative Notion
+record), from the same raw per-question answers. On any failure (response
+write, or any answer write, after retries) it logs the complete submission
+as structured JSON (`console.error`, picked up by Vercel's function logs —
+the only record of a lost response, since there's no dashboard or alerting)
+and returns a short reference code, shown as a discreet line on the score
+screen. Verified end-to-end, including a deliberately forced failure (bad
+`NOTION_ANSWERS_DB_ID`) — logged output included the full submission, the
+real Notion error, and the same reference code shown to the taker.
+
+## Taking experience (`app/q/[slug]/`, `components/quiz/`)
+
+`QuizRunner` (client component) owns intro → one question per screen → end.
+It keeps a `sessionRef` (plain ref, not state) as the single source of truth
+for identity/order/responses/timing — every handler reads and writes
+through it, so nothing depends on a `setState` closure being fresh when two
+things happen in the same tick (e.g. answering and advancing on one click,
+for `shortText`/`confidence`). **This bit onto a real bug once**: an early
+version of the `order` question had its own component call back into a
+`useState` closure to report the finished sequence instead of passing the
+freshly-computed array — same-tick staleness, silently scored the
+second-to-last state. Fixed by having `OrderPicker` pass its own computed
+array to `onLock` directly. Worth remembering if a similar "child finishes
+an interaction and reports it in the same synchronous call as its last
+`onChange`" pattern comes up again.
+
+- **Resume-safety**: `lib/quiz-storage.ts` persists the session to
+  `localStorage` (keyed `ditto-quiz:<slug>`) on every state-changing action.
+  `status: "completed"` blocks a second submission — reloading re-derives
+  and re-shows the same result from the stored responses (via `scoreQuiz`)
+  rather than resuming into an editable attempt. Clearing storage is the
+  only way around this (an accepted, honor-system limitation for an
+  internal enablement tool, not a security boundary).
+- **`order` questions** render as tap-to-build-a-sequence, not literal
+  drag-and-drop — more reliable at 375px, no drag library dependency. The
+  item pool is shuffled via a seed derived from the question id
+  (`lib/shuffle.ts`'s `seededShuffle`), so the JSON file's `items` array
+  order is irrelevant to gameplay (only `correctOrder` matters).
+- **Timers** (`timePerQuestionSeconds`): one `setInterval` per question,
+  auto-locking whatever's selected (or nothing) at zero and auto-advancing
+  shortly after (longer pause if feedback is on, so there's time to read it).
+- **Respondent/Email/Partner** on the Notion Response row are a best-effort
+  mapping from the fully config-driven `identityFields` (`deriveIdentitySummary`
+  in `lib/scoring.ts`): first field → Respondent, first `type: "email"` field
+  → Email, first field whose key/label matches `/partner|company/i` →
+  Partner. `Identity (raw)` is the reliable full JSON dump; these three are
+  just convenience columns and are blank when a quiz has no matching field.
+- **Brand bug fixed along the way**: `brand/ditto-tokens.css`'s own
+  `.ditto-eyebrow` class hardcodes `text-transform: uppercase`, contradicting
+  its own documentation (readme.md, SKILL.md, and the tokens.json comment all
+  say eyebrows are sentence-case, never capitalised) three times over.
+  Overridden in `app/globals.css` (not in `brand/`, which stays an untouched
+  reference copy) — sided with the repeated written rule over the one class
+  that disagreed with it.
+- Not implemented: `/embed/[slug]` (step 5).
 
 ## Build order
 
@@ -128,5 +189,9 @@ for review after each step:
 2. ✅ Quiz schema (Zod), three example quiz files.
 3. ✅ `setup:notion` script, Responses + Answers databases (created — see
    "Notion conventions" above).
-4. Taking experience end to end, writing to Notion.
+4. ✅ Taking experience end to end, writing to Notion (see "Taking
+   experience" above) — verified with real Notion writes across all 6
+   question types, the no-passMark + shuffled quiz, draft/preview gating,
+   the closed-quiz screen, resume-safety, 375px layout, and a forced
+   write-failure.
 5. Embed route (`/embed/[slug]`) + `public/embed.js` snippet.

@@ -115,3 +115,14 @@
    brand weights: font-light (300), font-normal (400), font-medium (500),
    font-semibold (600). Never use font-bold / font-extrabold — the brand
    does not use weight 700. */
+
+/* Bug fix, not a design choice: brand/ditto-tokens.css's own .ditto-eyebrow
+   utility hardcodes text-transform:uppercase, but readme.md, SKILL.md and
+   the tokens.json comment on --ls-eyebrow all say the same thing three
+   times over — eyebrows are never capitalised, sentence case only. The
+   class's own documentation disagrees with the class; siding with the
+   (repeated, unambiguous) written rule here rather than editing the
+   untouched reference copy of the bundle in brand/. */
+.ditto-eyebrow {
+  text-transform: none;
+}

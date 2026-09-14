@@ -5,11 +5,13 @@ enablement. Next.js + TypeScript + Tailwind, brand system self-contained in
 `brand/`, Notion as the results backend (added in a later step). Full spec:
 [`../ditto-quiz-tool-prompt-final.md`](../ditto-quiz-tool-prompt-final.md).
 
-**Status: step 3 of 5** — repo scaffold + brand tokens (step 1), the quiz
-content model (step 2), and the Notion backend (step 3) are done. The
-Responses and Answers databases already exist under the "Ditto Assessments"
-Notion page. No taking experience yet — nothing writes to Notion until step
-4. See `CLAUDE.md`'s "Build order" for what's next.
+**Status: step 4 of 5** — repo scaffold + brand tokens (step 1), the quiz
+content model (step 2), the Notion backend (step 3), and the taking
+experience (step 4) are all done: `/q/[slug]` runs the full intro → question
+→ end flow for every question type, resume-safe, and writes real Response +
+Answer rows to Notion in the background (never blocking the score screen).
+Only the embed route is left. See `CLAUDE.md`'s "Build order" and "Taking
+experience" sections for details.
 
 ## Adding a quiz
 
@@ -26,8 +28,11 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — this currently shows a
-brand sampler page (buttons, cards, stat callouts, icons), not a quiz.
+Open [http://localhost:3000](http://localhost:3000) for the brand sampler
+page, or [http://localhost:3000/q/partner-onboarding-basics](http://localhost:3000/q/partner-onboarding-basics)
+(and the other two slugs in `/quizzes`) to take a quiz. A `draft` quiz
+(`product-fundamentals-quickcheck`) needs `?preview=1` and never writes to
+Notion regardless of `.env`.
 
 ## Brand system
 
@@ -51,7 +56,11 @@ once, in the Notion UI (the setup script prints this same list):
 - Answers grouped by Tags, with the Correct checkbox rolled up — topic-level weakness
 - Answers filtered to Type = shortText — free text in one place for Notion AI to summarise
 
-Nothing writes to these yet — that's step 4 (the taking experience).
+A response failing to save is logged as structured JSON to the server
+console (Vercel function logs in production) with a short reference code —
+the same code shown to the taker on a discreet line on the score screen, so
+a lost response gets reported back to you rather than disappearing
+silently.
 
 ## Deploy
 
