@@ -6,8 +6,14 @@
  *
  * Run with: npm run setup:notion
  */
-import { getNotionClient } from "../lib/notion";
+import { getNotionClient, getPrimaryDataSourceId } from "../lib/notion";
 import type { PropertyConfigurationRequest } from "@notionhq/client/build/src/api-endpoints/common";
+import type { UpdateDataSourceParameters } from "@notionhq/client/build/src/api-endpoints/data-sources";
+
+// The update-data-source endpoint's per-property shape differs subtly from
+// the create-database one (e.g. relation configs), so it needs its own type
+// rather than reusing PropertyConfigurationRequest.
+type UpdateDataSourceProperties = NonNullable<UpdateDataSourceParameters["properties"]>;
 
 try {
   process.loadEnvFile(".env");
@@ -37,7 +43,9 @@ async function main() {
   const existingAnswers = existing.get(ANSWERS_TITLE);
 
   if (existingResponses && existingAnswers) {
-    console.log(`"${RESPONSES_TITLE}" and "${ANSWERS_TITLE}" already exist under this page — nothing to do.\n`);
+    console.log(`"${RESPONSES_TITLE}" and "${ANSWERS_TITLE}" already exist under this page.\n`);
+    const responsesDataSourceId = await getPrimaryDataSourceId(existingResponses);
+    await ensureResponsesRollups(responsesDataSourceId);
     printEnvLines(existingResponses, existingAnswers);
     return;
   }
@@ -89,8 +97,41 @@ async function main() {
   }
 
   console.log(`\n✓ Created both databases.\n`);
+  await ensureResponsesRollups(responsesDataSourceId);
   printEnvLines(responsesDb.id, answersDb.id);
   printViewChecklist();
+}
+
+/**
+ * Rollup columns on Responses that surface each answer's text/correctness
+ * directly in the Responses table — added idempotently every run (not just
+ * at creation) so re-running setup:notion after an upgrade backfills them
+ * onto an already-existing database.
+ */
+const RESPONSES_ROLLUPS: UpdateDataSourceProperties = {
+  "Answer text": {
+    type: "rollup",
+    rollup: { relation_property_name: "Answers", rollup_property_name: "Answer", function: "show_original" },
+  },
+  "Answer correct?": {
+    type: "rollup",
+    rollup: { relation_property_name: "Answers", rollup_property_name: "Correct", function: "show_original" },
+  },
+};
+
+async function ensureResponsesRollups(responsesDataSourceId: string) {
+  const notion = getNotionClient();
+  const dataSource = await notion.dataSources.retrieve({ data_source_id: responsesDataSourceId });
+  const existingNames = new Set(Object.keys(dataSource.properties ?? {}));
+  const missing = Object.fromEntries(
+    Object.entries(RESPONSES_ROLLUPS).filter(([name]) => !existingNames.has(name))
+  );
+  if (Object.keys(missing).length === 0) {
+    console.log("Rollup columns (Answer text / Answer correct?) already present on Responses.");
+    return;
+  }
+  console.log(`Adding rollup column(s) to Responses: ${Object.keys(missing).join(", ")}`);
+  await notion.dataSources.update({ data_source_id: responsesDataSourceId, properties: missing });
 }
 
 const RESPONSES_PROPERTIES: Record<string, PropertyConfigurationRequest> = {
@@ -157,7 +198,13 @@ function printViewChecklist() {
       "  - Responses filtered to Passed = false\n" +
       "  - Answers grouped by Question ID, filtered to one quiz — distractor analysis\n" +
       "  - Answers grouped by Tags, with the Correct checkbox rolled up — topic-level weakness\n" +
-      "  - Answers filtered to Type = shortText — free text in one place for Notion AI to summarise\n"
+      "  - Answers filtered to Type = shortText — free text in one place for Notion AI to summarise\n" +
+      "\n" +
+      "Optional, one-time: open a Response page → type /linked view → pick Answers →\n" +
+      "  filter \"Response\" contains \"This page\" → save as the default template for new\n" +
+      "  Response pages, so every response opens with a live table of just its own answers.\n" +
+      "  (\"Answer text\" / \"Answer correct?\" rollup columns already show a compact version\n" +
+      "  of this directly in the Responses grid, no setup needed.)\n"
   );
 }
 
