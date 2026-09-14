@@ -5,13 +5,13 @@ enablement. Next.js + TypeScript + Tailwind, brand system self-contained in
 `brand/`, Notion as the results backend (added in a later step). Full spec:
 [`../ditto-quiz-tool-prompt-final.md`](../ditto-quiz-tool-prompt-final.md).
 
-**Status: step 4 of 5** — repo scaffold + brand tokens (step 1), the quiz
-content model (step 2), the Notion backend (step 3), and the taking
-experience (step 4) are all done: `/q/[slug]` runs the full intro → question
-→ end flow for every question type, resume-safe, and writes real Response +
-Answer rows to Notion in the background (never blocking the score screen).
-Only the embed route is left. See `CLAUDE.md`'s "Build order" and "Taking
-experience" sections for details.
+**Status: all 5 build-order steps done** — repo scaffold + brand tokens,
+the quiz content model, the Notion backend, the taking experience
+(`/q/[slug]`, resume-safe, writes real Response + Answer rows to Notion in
+the background), and now the embed route + snippet (`/embed/[slug]` +
+`public/embed.js`). See `CLAUDE.md`'s "Build order" and "Taking experience"
+sections for the implementation details. Not yet deployed — see "Deploy"
+below.
 
 ## Adding a quiz
 
@@ -61,6 +61,31 @@ console (Vercel function logs in production) with a short reference code —
 the same code shown to the taker on a discreet line on the score screen, so
 a lost response gets reported back to you rather than disappearing
 silently.
+
+## Embedding
+
+The app is fully usable on its own subdomain (`/q/[slug]`), or drop a quiz
+into any other page — a WordPress page, for example — with one snippet:
+
+```html
+<script src="https://learn.ditto.id/embed.js" data-quiz="partner-onboarding-basics"></script>
+```
+
+Paste it where the quiz should appear (a WordPress "Custom HTML" block
+works well) — it inserts a responsive iframe right there and resizes it
+automatically as the quiz moves from intro → question → end, each a
+different height. No extra markup, no manual iframe sizing. Swap
+`data-quiz` for any other quiz's slug.
+
+Only `status: "live"` quizzes work by default — `closed` shows the same
+closed message as the full site, and `draft` 404s unless you also add
+`data-preview="1"` (mirrors `/q/[slug]`'s own `?preview=1`); a previewed
+draft never writes to Notion, same as everywhere else. Optionally set
+`data-height="600"` to change the iframe's height before the first real
+measurement arrives (default 480).
+
+Multiple quizzes on one page: paste the snippet again with a different
+`data-quiz` — each `<script>` tag creates its own independent iframe.
 
 ## Deploy
 

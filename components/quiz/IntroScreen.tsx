@@ -7,10 +7,12 @@ import { Button, Card, Badge, Logo, FormField } from "@/components/ds";
 export function IntroScreen({
   quiz,
   isPreview,
+  embed = false,
   onStart,
 }: {
   quiz: Quiz;
   isPreview: boolean;
+  embed?: boolean;
   onStart: (identity: Record<string, string>) => void;
 }) {
   const [values, setValues] = React.useState<Record<string, string>>({});
@@ -31,7 +33,13 @@ export function IntroScreen({
   }
 
   return (
-    <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
+    <div
+      style={
+        embed
+          ? { display: "flex", flexDirection: "column", alignItems: "center", padding: "24px 20px" }
+          : { minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
+      }
+    >
       <div style={{ width: "100%", maxWidth: 560 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
           <Logo variant="color" height={28} />

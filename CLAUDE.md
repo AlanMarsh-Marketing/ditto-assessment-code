@@ -178,7 +178,32 @@ an interaction and reports it in the same synchronous call as its last
   Overridden in `app/globals.css` (not in `brand/`, which stays an untouched
   reference copy) — sided with the repeated written rule over the one class
   that disagreed with it.
-- Not implemented: `/embed/[slug]` (step 5).
+
+## Embedding (`app/embed/[slug]/`, `public/embed.js`)
+
+`/embed/[slug]` renders the same `QuizRunner` as `/q/[slug]` (via the shared
+`resolveQuizOrNotFound` in `lib/quiz-request.ts`), just without full-viewport
+centering — `QuizRunner`/`IntroScreen`/`EndScreen`/`ClosedScreen` all take an
+`embed` prop that swaps `minHeight: "100dvh"` for a compact, top-aligned
+layout. `EmbedResizeReporter` posts the page's content height to the parent
+window on mount and on every `ResizeObserver` change; `public/embed.js`
+(pasted as one `<script data-quiz="slug">` tag into e.g. a WordPress page)
+creates the iframe and resizes it on those messages.
+
+**A real bug here too**: the resize reporter first measured
+`document.documentElement.scrollHeight`. That's `max(content, viewport)` —
+once the parent grows the iframe to fit a tall screen (the intro form), the
+document root can never report *smaller* for a shorter one (a question with
+no explanation panel yet), because its own `scrollHeight` floors at the
+iframe's current (already-tall) viewport height. Confirmed by testing an
+actual embed in a browser, not just reading the code — the iframe visibly
+failed to shrink between screens. Fixed by measuring a dedicated
+`#ditto-embed-content` wrapper (`EMBED_CONTENT_ID`) instead, which is sized
+by its own content regardless of the iframe's current height.
+
+`draft` needs `data-preview="1"` on the script tag (in addition to the
+quiz's own `?preview=1` gate) to be embeddable at all — same never-writes
+guarantee as everywhere else.
 
 ## Build order
 
@@ -194,4 +219,15 @@ for review after each step:
    question types, the no-passMark + shuffled quiz, draft/preview gating,
    the closed-quiz screen, resume-safety, 375px layout, and a forced
    write-failure.
-5. Embed route (`/embed/[slug]`) + `public/embed.js` snippet.
+5. ✅ Embed route (`/embed/[slug]`) + `public/embed.js` snippet (see
+   "Embedding" above) — verified in a real browser (not just code review):
+   a script tag in a plain HTML page correctly creates the iframe and
+   resizes it across intro → question → feedback, including catching and
+   fixing a real shrink-never-happens bug in the first version of the
+   resize logic.
+
+All five build-order steps are done. Remaining before this is a real
+production tool: deploy to Vercel (see README's "Deploy" section), point
+`learn.ditto.id` at it once DNS is ready, and decide whether to keep or
+clear the two test attempts ("Jordan" / "Alex") already sitting in the real
+Notion Responses/Answers databases from step 4's live testing.

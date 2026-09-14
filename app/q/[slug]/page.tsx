@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
-import { loadQuiz, listQuizSlugs } from "@/lib/quizzes";
+import { listQuizSlugs } from "@/lib/quizzes";
+import { resolveQuizOrNotFound } from "@/lib/quiz-request";
 import { QuizRunner } from "@/components/quiz/QuizRunner";
 import { ClosedScreen } from "@/components/quiz/ClosedScreen";
 
@@ -14,19 +14,7 @@ export function generateStaticParams() {
 export default async function QuizPage(props: PageProps<"/q/[slug]">) {
   const { slug } = await props.params;
   const { preview } = await props.searchParams;
-
-  let quiz;
-  try {
-    quiz = loadQuiz(slug);
-  } catch {
-    notFound();
-  }
-
-  // draft is reachable only with ?preview=1, and never writes to Notion.
-  const isPreview = quiz.status === "draft";
-  if (isPreview && preview !== "1") {
-    notFound();
-  }
+  const { quiz, isPreview } = resolveQuizOrNotFound(slug, preview);
 
   if (quiz.status === "closed") {
     return <ClosedScreen quiz={quiz} />;

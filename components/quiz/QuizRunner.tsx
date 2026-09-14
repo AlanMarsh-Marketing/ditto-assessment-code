@@ -46,7 +46,16 @@ const INITIAL_UI: UiState = {
  * fire in the same tick (e.g. answering and advancing on the same click,
  * for shortText/confidence) because sessionRef updates are synchronous.
  */
-export function QuizRunner({ quiz, isPreview }: { quiz: Quiz; isPreview: boolean }) {
+export function QuizRunner({
+  quiz,
+  isPreview,
+  embed = false,
+}: {
+  quiz: Quiz;
+  isPreview: boolean;
+  /** Rendered inside an iframe (/embed/[slug]) — swaps full-viewport centering for a compact, top-aligned layout. */
+  embed?: boolean;
+}) {
   const [ui, setUi] = React.useState<UiState>(INITIAL_UI);
 
   const sessionRef = React.useRef<RunnerSession>({
@@ -162,7 +171,7 @@ export function QuizRunner({ quiz, isPreview }: { quiz: Quiz; isPreview: boolean
   }
 
   if (ui.phase === "intro") {
-    return <IntroScreen quiz={quiz} isPreview={isPreview} onStart={handleStart} />;
+    return <IntroScreen quiz={quiz} isPreview={isPreview} embed={embed} onStart={handleStart} />;
   }
 
   if (ui.phase === "end" && ui.result) {
@@ -171,6 +180,7 @@ export function QuizRunner({ quiz, isPreview }: { quiz: Quiz; isPreview: boolean
         quiz={quiz}
         result={ui.result}
         isPreview={isPreview}
+        embed={embed}
         submissionState={ui.submissionState}
         referenceCode={ui.referenceCode}
       />

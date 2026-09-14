@@ -2,9 +2,15 @@ import type { Quiz } from "@/lib/quiz-schema";
 import { Card, Logo } from "@/components/ds";
 
 /** Branded message for `status: "closed"` — no questions rendered, nothing writes to Notion. */
-export function ClosedScreen({ quiz }: { quiz: Quiz }) {
+export function ClosedScreen({ quiz, embed = false }: { quiz: Quiz; embed?: boolean }) {
   return (
-    <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
+    <div
+      style={
+        embed
+          ? { display: "flex", justifyContent: "center", padding: "24px 20px" }
+          : { minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
+      }
+    >
       <div style={{ width: "100%", maxWidth: 480, textAlign: "center" }}>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
           <Logo variant="color" height={28} />

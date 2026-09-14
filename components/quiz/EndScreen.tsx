@@ -9,17 +9,25 @@ export function EndScreen({
   quiz,
   result,
   isPreview,
+  embed = false,
   submissionState,
   referenceCode,
 }: {
   quiz: Quiz;
   result: QuizResult;
   isPreview: boolean;
+  embed?: boolean;
   submissionState: SubmissionState;
   referenceCode?: string;
 }) {
   return (
-    <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }}>
+    <div
+      style={
+        embed
+          ? { display: "flex", justifyContent: "center", padding: "24px 20px" }
+          : { minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
+      }
+    >
       <div style={{ width: "100%", maxWidth: 560 }}>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
           <Logo variant="color" height={28} />
