@@ -126,6 +126,38 @@ export function formatAnswerText(question: Question, response: AnswerResponse | 
   }
 }
 
+/**
+ * Human-readable *correct* answer text for the Notion "Correct answer"
+ * column — independent of what the taker actually submitted, so a reviewer
+ * can see what was expected right alongside what was given. Blank for
+ * shortText/confidence, which have no "correct" answer at all.
+ */
+export function formatCorrectAnswerText(question: Question): string {
+  switch (question.type) {
+    case "single":
+      return question.options.find((o) => o.id === question.correctOptionId)?.label ?? "";
+
+    case "multi": {
+      const labels = question.options
+        .filter((o) => question.correctOptionIds.includes(o.id))
+        .map((o) => o.label);
+      return labels.join("; ");
+    }
+
+    case "trueFalse":
+      return question.correctAnswer ? "True" : "False";
+
+    case "order":
+      return question.correctOrder
+        .map((id) => question.items.find((it) => it.id === id)?.label ?? "?")
+        .join(" → "); // →
+
+    case "shortText":
+    case "confidence":
+      return "";
+  }
+}
+
 export interface TagBreakdownEntry {
   tag: string;
   correct: number;

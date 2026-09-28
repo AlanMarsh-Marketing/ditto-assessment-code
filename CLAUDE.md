@@ -99,7 +99,24 @@ rather than this summary for the authoritative property list. It's
 idempotent: it looks for existing `child_database` blocks titled "Responses"
 / "Answers" under the parent page and reports their ids instead of
 duplicating them; if it finds only one of the two, it stops rather than
-guessing. Real ids are in the untracked `.env` (never commit them — see
+guessing.
+
+Beyond that original table, two things were added after the initial build,
+both backfilled onto the already-existing databases via the same idempotent
+script (re-running `setup:notion` is always safe, it only adds what's
+missing):
+- Responses gets two `show_original` rollups off the Answers relation —
+  **"Answer text"** and **"Answer correct?"** — so the Responses grid shows
+  a compact per-response answer summary without opening anything.
+- Answers gets a **"Correct answer"** rich-text column: the human-readable
+  *expected* answer (via `lib/scoring.ts`'s `formatCorrectAnswerText`),
+  independent of what the taker actually submitted — blank for
+  `shortText`/`confidence`, which have no correct answer. This sits
+  alongside the existing `Answer` (what was given) and `Correct` (whether
+  it matched), so a reviewer sees given/expected/right-or-wrong together
+  without cross-referencing the quiz JSON.
+
+Real ids are in the untracked `.env` (never commit them — see
 `.env.example` for the shape); this repo's actual databases already exist
 under the "Ditto Assessments" Notion page.
 

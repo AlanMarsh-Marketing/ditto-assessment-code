@@ -45,7 +45,9 @@ async function main() {
   if (existingResponses && existingAnswers) {
     console.log(`"${RESPONSES_TITLE}" and "${ANSWERS_TITLE}" already exist under this page.\n`);
     const responsesDataSourceId = await getPrimaryDataSourceId(existingResponses);
+    const answersDataSourceId = await getPrimaryDataSourceId(existingAnswers);
     await ensureResponsesRollups(responsesDataSourceId);
+    await ensureAnswersColumns(answersDataSourceId);
     printEnvLines(existingResponses, existingAnswers);
     return;
   }
@@ -98,6 +100,7 @@ async function main() {
 
   console.log(`\n✓ Created both databases.\n`);
   await ensureResponsesRollups(responsesDataSourceId);
+  await ensureAnswersColumns(answersDb.data_sources[0].id);
   printEnvLines(responsesDb.id, answersDb.id);
   printViewChecklist();
 }
@@ -134,6 +137,30 @@ async function ensureResponsesRollups(responsesDataSourceId: string) {
   await notion.dataSources.update({ data_source_id: responsesDataSourceId, properties: missing });
 }
 
+/**
+ * Columns added to Answers after the initial build — same idempotent
+ * backfill pattern as ensureResponsesRollups, so re-running setup:notion
+ * after an upgrade adds them to an already-existing database.
+ */
+const ANSWERS_EXTRA_COLUMNS: UpdateDataSourceProperties = {
+  "Correct answer": { type: "rich_text", rich_text: {} },
+};
+
+async function ensureAnswersColumns(answersDataSourceId: string) {
+  const notion = getNotionClient();
+  const dataSource = await notion.dataSources.retrieve({ data_source_id: answersDataSourceId });
+  const existingNames = new Set(Object.keys(dataSource.properties ?? {}));
+  const missing = Object.fromEntries(
+    Object.entries(ANSWERS_EXTRA_COLUMNS).filter(([name]) => !existingNames.has(name))
+  );
+  if (Object.keys(missing).length === 0) {
+    console.log('Column ("Correct answer") already present on Answers.');
+    return;
+  }
+  console.log(`Adding column(s) to Answers: ${Object.keys(missing).join(", ")}`);
+  await notion.dataSources.update({ data_source_id: answersDataSourceId, properties: missing });
+}
+
 const RESPONSES_PROPERTIES: Record<string, PropertyConfigurationRequest> = {
   Name: { type: "title", title: {} },
   Quiz: { type: "select", select: {} },
@@ -158,6 +185,7 @@ const ANSWERS_PROPERTIES: Record<string, PropertyConfigurationRequest> = {
   Type: { type: "select", select: {} },
   Tags: { type: "multi_select", multi_select: {} },
   Answer: { type: "rich_text", rich_text: {} },
+  "Correct answer": { type: "rich_text", rich_text: {} },
   Correct: { type: "checkbox", checkbox: {} },
   Unscored: { type: "checkbox", checkbox: {} },
   "Time taken (s)": { type: "number", number: {} },
