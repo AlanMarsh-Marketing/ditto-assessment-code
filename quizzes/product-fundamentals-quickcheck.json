@@ -2,7 +2,7 @@
   "slug": "product-fundamentals-quickcheck",
   "title": "Product fundamentals quick check",
   "description": "A fast, timed check of the Ditto product basics — four products, one platform.",
-  "status": "draft",
+  "status": "live",
   "audience": "New starters",
   "settings": {
     "showFeedbackImmediately": true,
