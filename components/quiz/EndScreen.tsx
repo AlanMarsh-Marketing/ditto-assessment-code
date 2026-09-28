@@ -36,43 +36,56 @@ export function EndScreen({
           <Logo variant="color" height={28} />
         </div>
 
-        <Card style={{ textAlign: "center" }}>
-          <p className="ditto-eyebrow" style={{ textAlign: "center" }}>
-            {quiz.title}
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
-            <StatCallout value={result.percentage} unit="%" align="center" size="xl" />
-          </div>
-          <p style={{ marginTop: 8, fontSize: "var(--fs-body)", color: "var(--text-muted)" }}>
-            {result.score} of {result.maxScore} scored questions correct
-          </p>
+        {quiz.settings.showScoreAtEnd ? (
+          <>
+            <Card style={{ textAlign: "center" }}>
+              <p className="ditto-eyebrow" style={{ textAlign: "center" }}>
+                {quiz.title}
+              </p>
+              <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
+                <StatCallout value={result.percentage} unit="%" align="center" size="xl" />
+              </div>
+              <p style={{ marginTop: 8, fontSize: "var(--fs-body)", color: "var(--text-muted)" }}>
+                {result.score} of {result.maxScore} scored questions correct
+              </p>
 
-          {result.passed !== null ? (
-            <div style={{ marginTop: 16 }}>
-              <Badge tone={result.passed ? "orange" : "purple"} soft={!result.passed}>
-                {result.passed ? "Passed" : "Not yet — retake with your manager"}
-              </Badge>
-            </div>
-          ) : null}
-        </Card>
-
-        {result.tagBreakdown.length > 0 ? (
-          <Card style={{ marginTop: 20 }}>
-            <h2 style={{ fontSize: "var(--fs-h4)", fontWeight: "var(--fw-semibold)", color: "var(--text-strong)" }}>
-              By topic
-            </h2>
-            <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
-              {result.tagBreakdown.map((entry) => (
-                <div key={entry.tag} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-                  <span style={{ fontSize: "var(--fs-sm)", color: "var(--text-body)" }}>{entry.tag}</span>
-                  <span style={{ fontSize: "var(--fs-sm)", fontWeight: "var(--fw-semibold)", color: "var(--ditto-orange)" }}>
-                    {entry.correct}/{entry.total}
-                  </span>
+              {result.passed !== null ? (
+                <div style={{ marginTop: 16 }}>
+                  <Badge tone={result.passed ? "orange" : "purple"} soft={!result.passed}>
+                    {result.passed ? "Passed" : "Not yet — retake with your manager"}
+                  </Badge>
                 </div>
-              ))}
-            </div>
+              ) : null}
+            </Card>
+
+            {result.tagBreakdown.length > 0 ? (
+              <Card style={{ marginTop: 20 }}>
+                <h2 style={{ fontSize: "var(--fs-h4)", fontWeight: "var(--fw-semibold)", color: "var(--text-strong)" }}>
+                  By topic
+                </h2>
+                <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+                  {result.tagBreakdown.map((entry) => (
+                    <div key={entry.tag} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                      <span style={{ fontSize: "var(--fs-sm)", color: "var(--text-body)" }}>{entry.tag}</span>
+                      <span style={{ fontSize: "var(--fs-sm)", fontWeight: "var(--fw-semibold)", color: "var(--ditto-orange)" }}>
+                        {entry.correct}/{entry.total}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            ) : null}
+          </>
+        ) : (
+          <Card style={{ textAlign: "center" }}>
+            <p className="ditto-eyebrow" style={{ textAlign: "center" }}>
+              {quiz.title}
+            </p>
+            <p style={{ marginTop: 12, fontSize: "var(--fs-body)", color: "var(--text-body)" }}>
+              Thanks — your responses have been recorded.
+            </p>
           </Card>
-        ) : null}
+        )}
 
         <p style={{ marginTop: 20, textAlign: "center", fontSize: "var(--fs-caption)", color: "var(--text-muted)" }}>
           {isPreview
