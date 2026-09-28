@@ -15,11 +15,13 @@ below.
 
 ## Adding a quiz
 
-Add a new `/quizzes/<slug>.json` (slug must match the filename) following
-the shape in `lib/quiz-schema.ts` — the three example files are the easiest
-starting point to copy. Run `npm run validate:quizzes` to check it (or just
-`npm run build`, which runs it automatically); a bad file prints exactly
-which field is wrong rather than failing silently.
+See **[`docs/quiz-authoring.md`](docs/quiz-authoring.md)** for the full
+reference — every setting, all 6 question types with examples, the
+identity-fields-to-Notion mapping, and the publish workflow. Short version:
+add a new `/quizzes/<slug>.json` (slug must match the filename), copy the
+closest existing example, and run `npm run validate:quizzes` to check it
+(or just `npm run build`, which runs it automatically) — a bad file prints
+exactly which field is wrong rather than failing silently.
 
 ## Local setup
 
