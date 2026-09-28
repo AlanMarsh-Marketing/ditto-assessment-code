@@ -3,7 +3,7 @@
 import * as React from "react";
 import type { Quiz } from "@/lib/quiz-schema";
 import { scoreQuiz, type AnswerResponse, type QuizResult } from "@/lib/scoring";
-import { loadQuizSession, saveQuizSession } from "@/lib/quiz-storage";
+import { clearQuizSession, loadQuizSession, saveQuizSession } from "@/lib/quiz-storage";
 import { shuffleArray } from "@/lib/shuffle";
 import type { Submission } from "@/lib/submission";
 import { submitQuizAttempt } from "@/app/q/[slug]/actions";
@@ -170,6 +170,12 @@ export function QuizRunner({
       .catch(() => setUi((prev) => ({ ...prev, submissionState: "failed" })));
   }
 
+  function handleRetake() {
+    clearQuizSession(quiz.slug);
+    sessionRef.current = { identity: {}, order: [], currentIndex: 0, responses: {}, attemptStartedAt: 0 };
+    setUi(INITIAL_UI);
+  }
+
   if (ui.phase === "intro") {
     return <IntroScreen quiz={quiz} isPreview={isPreview} embed={embed} onStart={handleStart} />;
   }
@@ -183,6 +189,7 @@ export function QuizRunner({
         embed={embed}
         submissionState={ui.submissionState}
         referenceCode={ui.referenceCode}
+        onRetake={handleRetake}
       />
     );
   }

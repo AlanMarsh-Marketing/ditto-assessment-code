@@ -1,6 +1,6 @@
 import type { Quiz } from "@/lib/quiz-schema";
 import type { QuizResult } from "@/lib/scoring";
-import { Card, Badge, StatCallout, Logo } from "@/components/ds";
+import { Button, Card, Badge, StatCallout, Logo } from "@/components/ds";
 
 export type SubmissionState = "skipped" | "saving" | "saved" | "failed";
 
@@ -12,6 +12,7 @@ export function EndScreen({
   embed = false,
   submissionState,
   referenceCode,
+  onRetake,
 }: {
   quiz: Quiz;
   result: QuizResult;
@@ -19,6 +20,8 @@ export function EndScreen({
   embed?: boolean;
   submissionState: SubmissionState;
   referenceCode?: string;
+  /** Clears this quiz's stored session and returns to the intro screen — a fresh attempt, not an edit of this one. */
+  onRetake: () => void;
 }) {
   return (
     <div
@@ -82,6 +85,12 @@ export function EndScreen({
                   ? `Your result couldn't be saved. Please report this reference code: ${referenceCode}`
                   : ""}
         </p>
+
+        <div style={{ marginTop: 16, display: "flex", justifyContent: "center" }}>
+          <Button variant="outline" size="sm" onClick={onRetake}>
+            Retake
+          </Button>
+        </div>
       </div>
     </div>
   );

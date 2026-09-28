@@ -152,11 +152,18 @@ an interaction and reports it in the same synchronous call as its last
 
 - **Resume-safety**: `lib/quiz-storage.ts` persists the session to
   `localStorage` (keyed `ditto-quiz:<slug>`) on every state-changing action.
-  `status: "completed"` blocks a second submission — reloading re-derives
-  and re-shows the same result from the stored responses (via `scoreQuiz`)
-  rather than resuming into an editable attempt. Clearing storage is the
-  only way around this (an accepted, honor-system limitation for an
-  internal enablement tool, not a security boundary).
+  `status: "completed"` blocks resuming into an editable attempt — reloading
+  re-derives and re-shows the same result from the stored responses (via
+  `scoreQuiz`) instead. A **Retake** button on `EndScreen` (`onRetake` →
+  `QuizRunner.handleRetake`) clears that stored session and returns to the
+  intro screen for a genuinely new attempt — this isn't editing the
+  previous submission, it creates a fresh Notion Response/Answer set on the
+  next completion, so "no edit-after-submit" still holds. Always shown, not
+  just after a fail: the badge copy ("Not yet — retake with your manager")
+  already implied a retake path before one actually existed. No limit on
+  how many times — an honor-system feature for an internal enablement tool,
+  not an anti-cheat boundary; a determined person could always have cleared
+  storage manually anyway.
 - **`order` questions** render as tap-to-build-a-sequence, not literal
   drag-and-drop — more reliable at 375px, no drag library dependency. The
   item pool is shuffled via a seed derived from the question id
