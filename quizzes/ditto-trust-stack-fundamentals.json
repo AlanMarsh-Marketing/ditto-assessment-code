@@ -1,0 +1,439 @@
+{
+  "slug": "ditto-trust-stack-fundamentals",
+  "title": "The Ditto Trust Stack: Fundamentals",
+  "description": "Check what you've taken from the four introductory lessons: the Trust Stack, Ditto Protect, Ditto Authenticate and Ditto Verify. 16 questions, untimed. You need 70% to pass.",
+  "status": "draft",
+  "audience": "Ditto Connect partners",
+  "settings": {
+    "showFeedbackImmediately": true,
+    "showScoreAtEnd": true,
+    "passMark": 70,
+    "shuffleQuestions": true,
+    "timePerQuestionSeconds": null
+  },
+  "identityFields": [
+    {
+      "key": "fullName",
+      "label": "Full name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "email",
+      "label": "Work email",
+      "type": "email",
+      "required": true
+    },
+    {
+      "key": "partnerCompany",
+      "label": "Partner company",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "questions": [
+    {
+      "id": "stack-01",
+      "type": "single",
+      "prompt": "What does the Ditto Trust Stack read together in every interaction, rather than once at the door?",
+      "tags": [
+        "trust-stack"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "Identity, environment, intent and evidence"
+        },
+        {
+          "id": "b",
+          "label": "Password, OTP, device and location"
+        },
+        {
+          "id": "c",
+          "label": "Documents, biometrics, watchlists and credit history"
+        },
+        {
+          "id": "d",
+          "label": "App, web, contact centre and branch"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "The Trust Stack reads identity, environment, intent and evidence together in every interaction, replacing trust assembled tool by tool."
+    },
+    {
+      "id": "stack-02",
+      "type": "multi",
+      "context": "A prospect already uses another vendor for identity verification and isn't ready to replace it.",
+      "prompt": "Which of these are true of how the Ditto Trust Stack fits this prospect? Select all that apply.",
+      "tags": [
+        "trust-stack"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "You can lead with one Ditto solution and expand into the full stack later"
+        },
+        {
+          "id": "b",
+          "label": "Ditto can be built around technology the customer already has"
+        },
+        {
+          "id": "c",
+          "label": "The customer has to replace its verification vendor before it can use Ditto Protect or Ditto Authenticate"
+        },
+        {
+          "id": "d",
+          "label": "Taking more of the stack still means one integration, one contract and one vendor to manage"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "d"
+      ],
+      "explanation": "Each solution works together or stands alone. You can lead with one layer and expand the account, or build around existing technology, and the full stack is still one integration, one contract and one vendor."
+    },
+    {
+      "id": "stack-03",
+      "type": "trueFalse",
+      "prompt": "A customer has to buy the full Trust Stack for any one Ditto solution to work.",
+      "tags": [
+        "trust-stack"
+      ],
+      "correctAnswer": false,
+      "explanation": "Each solution works together or stands alone. You can lead with one layer and expand the account into the full stack, or build around technology the customer already has."
+    },
+    {
+      "id": "stack-04",
+      "type": "single",
+      "context": "A financial services customer runs its mobile app in several markets, each with its own security and compliance requirements. Its biggest headache is compliance cost: controls are rebuilt market by market, and every audit means pulling evidence together by hand.",
+      "prompt": "Which Ditto solution would you lead with?",
+      "tags": [
+        "trust-stack",
+        "ditto-protect"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "Ditto Verify"
+        },
+        {
+          "id": "b",
+          "label": "Ditto Authenticate"
+        },
+        {
+          "id": "c",
+          "label": "Ditto Protect"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Ditto Protect applies one set of runtime controls across global standards and regional mandates, configured per market rather than rebuilt per market. The Companion Console already holds the audit evidence."
+    },
+    {
+      "id": "protect-01",
+      "type": "single",
+      "context": "A fraudster redistributes a repackaged copy of a bank's app with malware built in. The bank already checks the device once, at install and again at sign-in.",
+      "prompt": "Why isn't that enough to stop this kind of fraud?",
+      "tags": [
+        "ditto-protect"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "Install and sign-in checks can't read any information about the device"
+        },
+        {
+          "id": "b",
+          "label": "The customer's password has usually been stolen already"
+        },
+        {
+          "id": "c",
+          "label": "The device environment can change at any moment during a session, so protection has to run continuously"
+        },
+        {
+          "id": "d",
+          "label": "One-off checks are only there to satisfy regulators"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "Fraud like this starts before authentication happens, and the environment can change at any point in a session. That's why Ditto Protect runs continuously across the app's whole lifecycle rather than checking once at the door."
+    },
+    {
+      "id": "protect-02",
+      "type": "order",
+      "prompt": "Put the Ditto Protect lifecycle in order, from release to response.",
+      "tags": [
+        "ditto-protect"
+      ],
+      "items": [
+        {
+          "id": "upload",
+          "label": "The customer uploads the app binary"
+        },
+        {
+          "id": "harden",
+          "label": "A hardened version comes back, with its configuration recorded against that build"
+        },
+        {
+          "id": "sense",
+          "label": "The app in production reports threat signals across device, app, network and malware"
+        },
+        {
+          "id": "posture",
+          "label": "Signals are correlated into a device security posture"
+        },
+        {
+          "id": "respond",
+          "label": "The device crosses a risk threshold and the customer's chosen response kicks in"
+        }
+      ],
+      "correctOrder": [
+        "upload",
+        "harden",
+        "sense",
+        "posture",
+        "respond"
+      ],
+      "explanation": "Protection starts before release with hardening (no code changes), then every app in production becomes a sensor. Signals build into a posture rather than a list of events, and crossing a threshold triggers the response."
+    },
+    {
+      "id": "protect-03",
+      "type": "multi",
+      "prompt": "When a device crosses a risk threshold, which responses can the customer choose? Select all that apply.",
+      "tags": [
+        "ditto-protect"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "Warn the user"
+        },
+        {
+          "id": "b",
+          "label": "Lock the app behind a branded screen"
+        },
+        {
+          "id": "c",
+          "label": "End the session outright"
+        },
+        {
+          "id": "d",
+          "label": "Remotely wipe the device"
+        }
+      ],
+      "correctOptionIds": [
+        "a",
+        "b",
+        "c"
+      ],
+      "explanation": "The customer decides between warn, lock and end session, and the same signal feeds their existing fraud and SIEM platforms."
+    },
+    {
+      "id": "protect-04",
+      "type": "trueFalse",
+      "prompt": "If a user resets their device or reinstalls the app, a suspension applied by Ditto Protect is cleared.",
+      "tags": [
+        "ditto-protect"
+      ],
+      "correctAnswer": false,
+      "explanation": "The suspension survives a reset or reinstall. Device lifecycle changes like a reset, reprovision or reinstall are flagged as an early warning of account takeover, not treated as a clean start."
+    },
+    {
+      "id": "auth-01",
+      "type": "single",
+      "prompt": "According to the lesson, what share of breaches start with a compromised credential?",
+      "tags": [
+        "ditto-authenticate"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "12%"
+        },
+        {
+          "id": "b",
+          "label": "22%"
+        },
+        {
+          "id": "c",
+          "label": "42%"
+        },
+        {
+          "id": "d",
+          "label": "62%"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "22% of breaches start with a compromised credential. So the friction passwords and OTPs add isn't buying much protection."
+    },
+    {
+      "id": "auth-02",
+      "type": "single",
+      "context": "A long-standing customer, who normally moves small amounts, starts an unusually large transfer in the banking app.",
+      "prompt": "With Ditto Authenticate in place, what happens next?",
+      "tags": [
+        "ditto-authenticate"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "An OTP is sent by SMS to confirm the payment"
+        },
+        {
+          "id": "b",
+          "label": "The transfer is blocked until the customer calls the contact centre"
+        },
+        {
+          "id": "c",
+          "label": "The check steps up automatically to a biometric scan confirmed through split-key cryptography"
+        },
+        {
+          "id": "d",
+          "label": "Nothing. Ditto Authenticate only applies at login"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The check matches the risk. Routine actions complete without re-authentication, while unusual high-value ones step up to a biometric scan. Split-key cryptography divides the key between device and server, so there's no single point to steal."
+    },
+    {
+      "id": "auth-03",
+      "type": "single",
+      "prompt": "Ditto Authenticate can sign a high-value action as it happens. What is that signature bound to?",
+      "tags": [
+        "ditto-authenticate"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "The customer's password and username"
+        },
+        {
+          "id": "b",
+          "label": "The exact amount, payee, device and person"
+        },
+        {
+          "id": "c",
+          "label": "The session cookie and IP address"
+        },
+        {
+          "id": "d",
+          "label": "The date of the customer's original onboarding"
+        }
+      ],
+      "correctOptionId": "b",
+      "explanation": "Each signed action produces a timestamped, geo-tagged record tied to that exact amount, payee, device and person. Standard passkeys can't do this, and it makes disputes faster to resolve."
+    },
+    {
+      "id": "auth-04",
+      "type": "trueFalse",
+      "prompt": "To adopt Ditto Authenticate, a customer has to move its whole customer base off passwords in a single cutover.",
+      "tags": [
+        "ditto-authenticate"
+      ],
+      "correctAnswer": false,
+      "explanation": "There's no forced cutover. Legacy methods can be replaced segment by segment, so fraud and cost start falling straight away rather than after a full migration."
+    },
+    {
+      "id": "verify-01",
+      "type": "single",
+      "prompt": "What is the main difference between Ditto Verify and most onboarding platforms?",
+      "tags": [
+        "ditto-verify"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "It checks more document types than any other vendor"
+        },
+        {
+          "id": "b",
+          "label": "It removes the need for AML and PEP screening"
+        },
+        {
+          "id": "c",
+          "label": "It replaces the customer's core banking system"
+        },
+        {
+          "id": "d",
+          "label": "The verified identity carries forward and is reused for step-up, transactions and recovery"
+        }
+      ],
+      "correctOptionId": "d",
+      "explanation": "On most platforms the identity effectively expires once the account is registered. Ditto Verify reuses the same biometric for high-assurance step-up later, so there's no re-enrolment, and a lost device becomes a quick re-confirmation."
+    },
+    {
+      "id": "verify-02",
+      "type": "single",
+      "prompt": "Why is Ditto Verify's passive liveness check hard for a fraudster to beat?",
+      "tags": [
+        "ditto-verify"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "No instructions or gestures are given, so there's nothing to train a model against"
+        },
+        {
+          "id": "b",
+          "label": "The customer has to follow a randomised set of head movements"
+        },
+        {
+          "id": "c",
+          "label": "A human agent watches every check live"
+        },
+        {
+          "id": "d",
+          "label": "The face image is stored and compared on every later login"
+        }
+      ],
+      "correctOptionId": "a",
+      "explanation": "Passive liveness gives no prompts, so there's nothing to train against. It's iBeta Level 2 certified, the highest independent standard for presentation attack detection."
+    },
+    {
+      "id": "verify-03",
+      "type": "single",
+      "context": "A lender sees a cluster of applications that each look clean on their own. In fact they share devices, phone numbers and IP addresses.",
+      "prompt": "Which part of Ditto Verify is built to expose this?",
+      "tags": [
+        "ditto-verify"
+      ],
+      "options": [
+        {
+          "id": "a",
+          "label": "The no-code workflow builder"
+        },
+        {
+          "id": "b",
+          "label": "Risk-aware routing"
+        },
+        {
+          "id": "c",
+          "label": "The graph identity network"
+        },
+        {
+          "id": "d",
+          "label": "Document authentication"
+        }
+      ],
+      "correctOptionId": "c",
+      "explanation": "The graph identity network links applicants across devices, numbers, emails and IPs, exposing fraud rings that a single application reviewed in isolation would miss."
+    },
+    {
+      "id": "verify-04",
+      "type": "trueFalse",
+      "prompt": "Ditto Verify stores customers' biometrics as images so it can re-check them later.",
+      "tags": [
+        "ditto-verify"
+      ],
+      "correctAnswer": false,
+      "explanation": "Biometrics are matched cryptographically, not stored as images, so there's no stored biometric to lose in a breach."
+    },
+    {
+      "id": "confidence-01",
+      "type": "confidence",
+      "prompt": "How confident do you feel explaining the Ditto Trust Stack in a customer conversation?",
+      "lowLabel": "Not confident",
+      "highLabel": "Very confident"
+    }
+  ]
+}
