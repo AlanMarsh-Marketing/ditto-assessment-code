@@ -8,13 +8,15 @@ export function ClosedScreen({ quiz, embed = false }: { quiz: Quiz; embed?: bool
       style={
         embed
           ? { display: "flex", justifyContent: "center", padding: "24px 20px" }
-          : { minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
+          : { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
       }
     >
       <div style={{ width: "100%", maxWidth: 480, textAlign: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
-          <Logo variant="color" height={28} />
-        </div>
+        {embed ? (
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+            <Logo variant="color" height={28} />
+          </div>
+        ) : null}
         <Card tone="purple">
           <h1 style={{ fontSize: "var(--fs-h3)", fontWeight: "var(--fw-medium)", color: "#fff" }}>
             {quiz.title} is now closed

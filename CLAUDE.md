@@ -205,6 +205,16 @@ an interaction and reports it in the same synchronous call as its last
   reference copy) — sided with the repeated written rule over the one class
   that disagreed with it.
 
+## Page chrome
+
+`/q/[slug]` is wrapped in `components/quiz/PageShell.tsx`: a header (Ditto
+logo linking to ditto.id, quiz title on wider screens) and a footer
+(© year + ditto.id), with the content filling the space between. The shell
+supplies the logo and the full-page height, so `IntroScreen`/`EndScreen`/
+`ClosedScreen` only render their own logo (and compact sizing) when `embed`
+is true. `/embed/[slug]` deliberately has no header/footer — it sits inside
+someone else's page, which already has its own.
+
 ## Embedding (`app/embed/[slug]/`, `public/embed.js`)
 
 `/embed/[slug]` renders the same `QuizRunner` as `/q/[slug]` (via the shared

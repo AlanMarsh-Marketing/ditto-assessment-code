@@ -37,14 +37,17 @@ export function IntroScreen({
       style={
         embed
           ? { display: "flex", flexDirection: "column", alignItems: "center", padding: "24px 20px" }
-          : { minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
+          : { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
       }
     >
       <div style={{ width: "100%", maxWidth: 560 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
-          <Logo variant="color" height={28} />
-          {isPreview ? <Badge tone="purple" soft>Preview — not saved</Badge> : null}
-        </div>
+        {embed || isPreview ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+            {/* The page header carries the logo on the standalone page; embeds have no header. */}
+            {embed ? <Logo variant="color" height={28} /> : <span />}
+            {isPreview ? <Badge tone="purple" soft>Preview — not saved</Badge> : null}
+          </div>
+        ) : null}
 
         <p className="ditto-eyebrow">{quiz.audience}</p>
         <h1 style={{ marginTop: 8, fontSize: "var(--fs-h2)", fontWeight: "var(--fw-regular)", color: "var(--text-strong)" }}>

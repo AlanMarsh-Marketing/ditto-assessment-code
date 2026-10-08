@@ -28,13 +28,15 @@ export function EndScreen({
       style={
         embed
           ? { display: "flex", justifyContent: "center", padding: "24px 20px" }
-          : { minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
+          : { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 20px" }
       }
     >
       <div style={{ width: "100%", maxWidth: 560 }}>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
-          <Logo variant="color" height={28} />
-        </div>
+        {embed ? (
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+            <Logo variant="color" height={28} />
+          </div>
+        ) : null}
 
         {quiz.settings.showScoreAtEnd ? (
           <>
