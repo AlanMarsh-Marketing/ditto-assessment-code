@@ -25,6 +25,7 @@ export function QuestionScreen({
   questionNumber,
   totalQuestions,
   isLast,
+  attemptSeed,
   onAnswer,
   onNext,
 }: {
@@ -33,6 +34,8 @@ export function QuestionScreen({
   questionNumber: number;
   totalQuestions: number;
   isLast: boolean;
+  /** Per-attempt seed (the attempt's start time) — varies the order-question pool between attempts. */
+  attemptSeed: number;
   onAnswer: (response: AnswerResponse) => void;
   onNext: () => void;
 }) {
@@ -192,6 +195,7 @@ export function QuestionScreen({
             value={orderValue}
             revealed={revealed}
             locked={answered}
+            shuffleSeed={attemptSeed}
             onChange={setOrderValue}
             onLock={(finalOrder) => finalize({ type: "order", orderedItemIds: finalOrder })}
           />

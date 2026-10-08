@@ -162,8 +162,8 @@ count as wrong. The taker toggles options freely, then clicks a separate
 `correctOrder` must be an exact permutation of `items`' ids (same ids, no
 duplicates, nothing missing) — the build fails loudly if it isn't. **The
 order `items` are listed in the JSON file doesn't matter** — the app always
-presents them shuffled to the taker (a stable per-question shuffle, not
-random each render), so don't bother scrambling them yourself in the file;
+presents them shuffled to the taker (a different shuffle each attempt, steady
+within one, and never already in the correct order), so don't bother scrambling them yourself in the file;
 write them in whatever order reads clearly, and get the real answer right
 only in `correctOrder`. On screen this is tap-to-build-a-sequence (tap in
 order, tap again to undo), not drag-and-drop.

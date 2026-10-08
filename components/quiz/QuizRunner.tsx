@@ -23,6 +23,8 @@ interface UiState {
   phase: "intro" | "question" | "end";
   order: string[];
   currentIndex: number;
+  /** attemptStartedAt of the current attempt — seeds per-attempt shuffles. */
+  attemptSeed: number;
   result: QuizResult | null;
   submissionState: SubmissionState;
   referenceCode?: string;
@@ -32,6 +34,7 @@ const INITIAL_UI: UiState = {
   phase: "intro",
   order: [],
   currentIndex: 0,
+  attemptSeed: 0,
   result: null,
   submissionState: "skipped",
 };
@@ -95,11 +98,18 @@ export function QuizRunner({
         phase: "end",
         order: saved.order,
         currentIndex: saved.currentIndex,
+        attemptSeed: saved.attemptStartedAt,
         result: scoreQuiz(quiz, saved.responses),
         submissionState: "skipped", // no live signal for a past attempt — nothing to report
       }));
     } else {
-      setUi((prev) => ({ ...prev, phase: "question", order: saved.order, currentIndex: saved.currentIndex }));
+      setUi((prev) => ({
+        ...prev,
+        phase: "question",
+        order: saved.order,
+        currentIndex: saved.currentIndex,
+        attemptSeed: saved.attemptStartedAt,
+      }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -114,9 +124,10 @@ export function QuizRunner({
     const free = quiz.questions.filter((q) => !q.pinToEnd).map((q) => q.id);
     const pinned = quiz.questions.filter((q) => q.pinToEnd).map((q) => q.id);
     const shuffled = quiz.settings.shuffleQuestions ? [...shuffleArray(free), ...pinned] : ids;
-    sessionRef.current = { identity: identityValues, order: shuffled, currentIndex: 0, responses: {}, attemptStartedAt: Date.now() };
+    const attemptStartedAt = Date.now();
+    sessionRef.current = { identity: identityValues, order: shuffled, currentIndex: 0, responses: {}, attemptStartedAt };
     persist("in-progress");
-    setUi((prev) => ({ ...prev, phase: "question", order: shuffled, currentIndex: 0 }));
+    setUi((prev) => ({ ...prev, phase: "question", order: shuffled, currentIndex: 0, attemptSeed: attemptStartedAt }));
   }
 
   function handleAnswer(response: AnswerResponse) {
@@ -208,6 +219,7 @@ export function QuizRunner({
       questionNumber={ui.currentIndex + 1}
       totalQuestions={ui.order.length}
       isLast={ui.currentIndex + 1 >= ui.order.length}
+      attemptSeed={ui.attemptSeed}
       onAnswer={handleAnswer}
       onNext={handleNext}
     />

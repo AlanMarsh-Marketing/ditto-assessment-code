@@ -22,8 +22,11 @@ export function OrderPicker({
   revealed,
   locked,
   onLock,
+  shuffleSeed,
 }: {
   question: OrderQuestion;
+  /** Varies per attempt (stable within one, incl. across a reload) so the pool order isn't the same for everyone. */
+  shuffleSeed: number;
   value: string[];
   onChange: (orderedItemIds: string[]) => void;
   revealed: boolean;
@@ -32,7 +35,16 @@ export function OrderPicker({
    *  would still be one tap stale in the same synchronous call as onChange. */
   onLock: (finalOrder: string[]) => void;
 }) {
-  const shuffledItems = React.useMemo(() => seededShuffle(question.items, question.id), [question]);
+  const shuffledItems = React.useMemo(() => {
+    // Never present the items already in the correct order — retry with a
+    // salted seed until the shuffle differs (always possible for ≥2 items).
+    let result = question.items;
+    for (let salt = 0; salt < 50; salt++) {
+      result = seededShuffle(question.items, `${shuffleSeed}:${question.id}:${salt}`);
+      if (result.some((it, i) => it.id !== question.correctOrder[i])) break;
+    }
+    return result;
+  }, [question, shuffleSeed]);
   const itemsById = React.useMemo(() => new Map(question.items.map((it) => [it.id, it])), [question]);
   const pool = shuffledItems.filter((it) => !value.includes(it.id));
 

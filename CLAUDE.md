@@ -183,8 +183,10 @@ an interaction and reports it in the same synchronous call as its last
   storage manually anyway.
 - **`order` questions** render as tap-to-build-a-sequence, not literal
   drag-and-drop — more reliable at 375px, no drag library dependency. The
-  item pool is shuffled via a seed derived from the question id
-  (`lib/shuffle.ts`'s `seededShuffle`), so the JSON file's `items` array
+  item pool is shuffled via a seed derived from the attempt's start time plus
+  the question id (`lib/shuffle.ts`'s `seededShuffle`), so it differs per
+  attempt but is stable across a reload, and is re-salted if it would ever
+  land on the correct order (an id-only seed once did exactly that), so the JSON file's `items` array
   order is irrelevant to gameplay (only `correctOrder` matters).
 - **Timers** (`timePerQuestionSeconds`): one `setInterval` per question,
   auto-locking whatever's selected (or nothing) at zero and auto-advancing
