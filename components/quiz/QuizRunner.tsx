@@ -110,7 +110,10 @@ export function QuizRunner({
 
   function handleStart(identityValues: Record<string, string>) {
     const ids = quiz.questions.map((q) => q.id);
-    const shuffled = quiz.settings.shuffleQuestions ? shuffleArray(ids) : ids;
+    // pinToEnd questions stay after the shuffled ones, in file order.
+    const free = quiz.questions.filter((q) => !q.pinToEnd).map((q) => q.id);
+    const pinned = quiz.questions.filter((q) => q.pinToEnd).map((q) => q.id);
+    const shuffled = quiz.settings.shuffleQuestions ? [...shuffleArray(free), ...pinned] : ids;
     sessionRef.current = { identity: identityValues, order: shuffled, currentIndex: 0, responses: {}, attemptStartedAt: Date.now() };
     persist("in-progress");
     setUi((prev) => ({ ...prev, phase: "question", order: shuffled, currentIndex: 0 }));

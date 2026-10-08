@@ -431,6 +431,7 @@
     {
       "id": "confidence-01",
       "type": "confidence",
+      "pinToEnd": true,
       "prompt": "How confident do you feel explaining the Ditto Trust Stack in a customer conversation?",
       "lowLabel": "Not confident",
       "highLabel": "Very confident"

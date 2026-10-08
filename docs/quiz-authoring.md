@@ -89,6 +89,7 @@ Every question, regardless of type, shares:
 | `context` | no | scenario-setting text, shown in a tinted card **above** the prompt |
 | `explanation` | no | shown after answering, only when `showFeedbackImmediately` is on |
 | `tags` | no | array of strings — drives the end screen's "By topic" breakdown and Notion's `Tags` column. A question can carry more than one tag and counts toward each. |
+| `pinToEnd` | no | `true` keeps this question after all the others when `shuffleQuestions` is on (in file order if several are pinned) — handy for a closing `confidence` self-assessment. No effect when shuffling is off. |
 
 Scoring is all-or-nothing per question (no partial credit). `shortText` and
 `confidence` are **never** scored — captured for analysis, not marked

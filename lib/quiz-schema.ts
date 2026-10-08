@@ -62,6 +62,8 @@ const QuestionCommon = {
   context: z.string().trim().min(1).optional(),
   explanation: z.string().trim().min(1).optional(),
   tags: z.array(nonEmpty).optional(),
+  /** With shuffleQuestions on, keep this question after all the shuffled ones (e.g. a closing self-assessment). */
+  pinToEnd: z.boolean().optional(),
 };
 
 const OptionSchema = z.object({ id, label: nonEmpty });
