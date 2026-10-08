@@ -2,7 +2,7 @@
   "slug": "ditto-trust-stack-fundamentals",
   "title": "The Ditto Trust Stack: Fundamentals",
   "description": "Check what you've taken from the four introductory lessons: the Trust Stack, Ditto Protect, Ditto Authenticate and Ditto Verify. 16 questions, untimed. You need 70% to pass.",
-  "status": "draft",
+  "status": "live",
   "audience": "Ditto Connect partners",
   "settings": {
     "showFeedbackImmediately": true,
